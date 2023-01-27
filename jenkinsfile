@@ -19,10 +19,10 @@ pipeline {
     }
     
     stages {
-        stage('Hello') {
+        stage('Build') {
              steps {
                 echo 'Hello World'
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-java', url: 'https://github.com/Arti1998/java-mvn-hello-world-web-app.git']])
+                //checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-java', url: 'https://github.com/Arti1998/java-mvn-hello-world-web-app.git']])
                 bat label: '', script: 'mvn clean package'
             }
         }
