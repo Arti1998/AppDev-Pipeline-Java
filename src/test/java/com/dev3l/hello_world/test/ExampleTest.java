@@ -1,7 +1,12 @@
 package com.dev3l.hello_world.test;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
+
+import com.dev3l.hello_world.App;
+import com.dev3l.hello_world.Example;
 
 public class ExampleTest {
 	@Test
@@ -23,11 +28,14 @@ public class ExampleTest {
 	    assertEquals(2, result);
 	}
 
-
-
 }
 public class Example {
     private String message;
+    
+    public Example() {
+        // Default message
+        this.message = "Hello, world!";
+    }
     
     public Example(String message) {
         this.message = message;
@@ -37,4 +45,5 @@ public class Example {
         return this.message;
     }
 }
+
 
