@@ -8,4 +8,11 @@ public class ExampleTest {
 	public void exampleTest() {
 		Assert.assertTrue(true);
 	}
+	
+	@Test
+	public void testAddNumbersWithNegativeNumbers() {
+	    App app = new App();
+	    int result = app.addNumbers(-2, 3);
+	    assertEquals(1, result);
+	}	
 }
