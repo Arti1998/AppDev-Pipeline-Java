@@ -8,20 +8,33 @@ public class ExampleTest {
 	public void exampleTest() {
 		Assert.assertTrue(true);
 	}
-	
+		
 	@Test
-	public void testAddNumbersWithNegativeNumbers() {
-	    App app = new App();
-	    int result = app.addNumbers(-2, 3);
-	    assertEquals(1, result);
+	public void testGetMessageWithNull() {
+	    Example example = new Example(null);
+	    String actualMessage = example.getMessage();
+	    assertNotNull(actualMessage);
 	}
-	
+
 	@Test
-	public void testMultiplyNumbers() {
+	public void testSubtractNumbers() {
 	    App app = new App();
-	    int result = app.multiplyNumbers(2, 3);
-	    assertEquals(7, result);
+	    int result = app.subtractNumbers(3, 2);
+	    assertEquals(2, result);
 	}
+
 
 
 }
+public class Example {
+    private String message;
+    
+    public Example(String message) {
+        this.message = message;
+    }
+    
+    public String getMessage() {
+        return this.message;
+    }
+}
+
