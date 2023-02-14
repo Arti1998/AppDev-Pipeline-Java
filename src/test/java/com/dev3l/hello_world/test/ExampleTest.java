@@ -14,5 +14,14 @@ public class ExampleTest {
 	    App app = new App();
 	    int result = app.addNumbers(-2, 3);
 	    assertEquals(1, result);
-	}	
+	}
+	
+	@Test
+	public void testMultiplyNumbers() {
+	    App app = new App();
+	    int result = app.multiplyNumbers(2, 3);
+	    assertEquals(6, result);
+	}
+
+
 }
