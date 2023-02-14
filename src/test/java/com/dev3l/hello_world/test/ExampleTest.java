@@ -19,6 +19,7 @@ public class ExampleTest {
 	    Example example = new Example(null);
 	    String actualMessage = example.getMessage();
 	    assertNotNull(actualMessage);
+		System.out.println(actualMessage)
 	}
 
 	@Test
@@ -26,6 +27,7 @@ public class ExampleTest {
 	    App app = new App();
 	    int result = app.subtractNumbers(3, 2);
 	    assertEquals(2, result);
+		System.out.println(result)
 	}
 
 }
