@@ -20,7 +20,7 @@ public class ExampleTest {
 	public void testMultiplyNumbers() {
 	    App app = new App();
 	    int result = app.multiplyNumbers(2, 3);
-	    assertEquals(6, result);
+	    assertEquals(7, result);
 	}
 
 
