@@ -23,7 +23,7 @@ public class ExampleTest {
 	    HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	    con.setRequestMethod("GET");
 	    int responseCode = con.getResponseCode();
-	    assertEquals(400, responseCode); // check that the response code is 200 OK
+	    assertEquals(200, responseCode); // check that the response code is 200 OK
 
 	    // Read the response content and check for the title, body, image, and header
 	    Scanner scanner = new Scanner(con.getInputStream());
