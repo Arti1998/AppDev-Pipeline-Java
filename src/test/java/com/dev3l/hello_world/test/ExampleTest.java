@@ -7,8 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import com.dev3l.hello_world.App;
-import com.dev3l.hello_world.Example;
 
 public class ExampleTest {
 	//@Test
