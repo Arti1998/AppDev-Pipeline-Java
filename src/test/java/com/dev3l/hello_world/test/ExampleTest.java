@@ -10,8 +10,12 @@ import org.junit.Test;
 
 public class ExampleTest {
 	
+	@Before
+	  public void setUp() {
+	    setBaseUrl("http://localhost:7171"); // replace with the URL of your web app
+	  }
 	
-	 @Test
+	  @Test
 	  public void testWebPage() {
 	    beginAt("/index.jsp"); // replace with the path to your web app's index page
 
@@ -23,11 +27,11 @@ public class ExampleTest {
 	    assertTextPresent("Now with Arti K-CI-CD!New Change");
 
 	    // Test the image
-	    //assertElementPresent("img");
-	    //assertElementPresentAttribute("img", "src", "https://octodex.github.com/images/spidertocat.png");
-	    //assertElementPresentAttribute("img", "alt", "Spidertocat");
-	    //assertElementPresentAttribute("img", "class", "img-responsive center-block");
-	    //assertElementPresentAttribute("img", "style", "width:250px");
+	    assertElementPresent("img");
+	    assertElementPresentAttribute("img", "src", "https://octodex.github.com/images/spidertocat.png");
+	    assertElementPresentAttribute("img", "alt", "Spidertocat");
+	    assertElementPresentAttribute("img", "class", "img-responsive center-block");
+	    assertElementPresentAttribute("img", "style", "width:250px");
 
 	    // Test the header
 	    assertElementPresent("h2");
