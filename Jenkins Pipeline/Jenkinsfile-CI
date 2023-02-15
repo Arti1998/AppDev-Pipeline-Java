@@ -23,7 +23,7 @@ pipeline {
              steps {
                 https://github.com/Arti1998/AppDev-Pipeline-Java.git
                 checkout scmGit(branches: [[name: '*/aratik-java-app']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-java', url: 'https://github.com/ranjitaws2020/AppDev-Pipeline-Java.git']])
-                bat label: '', script: 'mvn clean package'
+                bat label: '', script: 'mvn clean install'
             }
         }
          stage('test') {
