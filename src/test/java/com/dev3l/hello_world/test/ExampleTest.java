@@ -48,7 +48,7 @@ public class ExampleTest {
 	 private WebTester tester;
 
 	 @Before
-	    public void setUp() {
+	    public void setUpWebTester() {
 		tester = new WebTester();
 		tester.setBaseUrl("http://localhost:8085/JavaApp/");
 		tester.beginAt("/");
