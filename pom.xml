@@ -38,6 +38,12 @@
 		  <version>3.0.0-M9</version>
 		  <type>maven-plugin</type>
 		</dependency>
+		<dependency>
+		  <groupId>io.github.bonigarcia</groupId>
+		  <artifactId>webdrivermanager</artifactId>
+		  <version>4.4.3</version>
+		  <scope>test</scope>
+		</dependency>
 		<!-- log4j -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
