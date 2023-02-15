@@ -47,10 +47,10 @@ public class ExampleTest {
 		//driver = new ChromeDriver();
 		    
 		// Configure the WebDriver to use Microsoft Edge
-		//System.setProperty("webdriver.edge.driver", "C:/msedgedriver.exe");
-		//driver = new EdgeDriver();
-		WebDriverManager.edgedriver().setup();
-   	        driver = new EdgeDriver();
+		System.setProperty("webdriver.edge.driver", "C:/msedgedriver.exe");
+		driver = new EdgeDriver();
+		//WebDriverManager.edgedriver().setup();
+   	        //driver = new EdgeDriver();
 
 
 	    }
