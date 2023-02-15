@@ -13,7 +13,7 @@ public class ExampleTest {
 	@Test
 	  public void testWebPage() throws IOException {
 	    // Make a request to the web page and get the response
-	    URL url = new URL("http://localhost:7171/index.jsp"); // replace with the URL of your web app
+	    URL url = new URL("http://localhost:8085/JavaApp/"); // replace with the URL of your web app
 	    HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	    con.setRequestMethod("GET");
 	    int responseCode = con.getResponseCode();
