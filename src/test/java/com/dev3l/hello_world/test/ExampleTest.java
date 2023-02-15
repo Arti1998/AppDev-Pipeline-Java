@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+
 import org.junit.*;
 
 
@@ -45,8 +47,11 @@ public class ExampleTest {
 		//driver = new ChromeDriver();
 		    
 		// Configure the WebDriver to use Microsoft Edge
-		System.setProperty("webdriver.edge.driver", "C:/msedgedriver.exe");
-		driver = new EdgeDriver();
+		//System.setProperty("webdriver.edge.driver", "C:/msedgedriver.exe");
+		//driver = new EdgeDriver();
+		WebDriverManager.edgedriver().setup();
+   	        driver = new EdgeDriver();
+
 
 	    }
 	
