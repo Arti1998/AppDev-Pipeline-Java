@@ -12,6 +12,8 @@ import org.junit.Before;
 
 import net.sourceforge.jwebunit.api.IElement;
 import net.sourceforge.jwebunit.junit.WebTester;
+import static net.sourceforge.jwebunit.junit.JWebUnit.assertAttributeEquals;
+
 
 import org.openqa.selenium.By;
 //import org.openqa.selenium.chrome.ChromeDriver;
