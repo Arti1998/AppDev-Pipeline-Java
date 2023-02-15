@@ -90,24 +90,31 @@
 				</configuration>
 			</plugin>			
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M5</version>
-				<configuration>
-				  <testFailureIgnore>true</testFailureIgnore>
-				  <argLine>-Xmx512m</argLine>
-				  <parallel>methods</parallel>
-				  <useUnlimitedThreads>true</useUnlimitedThreads>
-				  <threadCountMethods>5</threadCountMethods>
-				  <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-				  <properties>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-surefire-plugin</artifactId>
+			    <version>3.0.0-M5</version>
+			    <configuration>
+				<testFailureIgnore>true</testFailureIgnore>
+				<argLine>-Xmx512m</argLine>
+				<parallel>methods</parallel>
+				<useUnlimitedThreads>true</useUnlimitedThreads>
+				<threadCountMethods>5</threadCountMethods>
+				<reportsDirectory>target/surefire-reports</reportsDirectory>
+				<reportFormat>xml</reportFormat>
+				<useFile>true</useFile>
+				<fileEncoding>UTF-8</fileEncoding>
+				<includes>
+				    <include>**/*.java</include>
+				</includes>
+				<properties>
 				    <property>
-				      <name>listener</name>
-				      <value>org.uncommons.reportng.HTMLReporter, org.uncommons.reportng.JUnitXMLReporter</value>
+					<name>listener</name>
+					<value>org.uncommons.reportng.HTMLReporter, org.uncommons.reportng.JUnitXMLReporter</value>
 				    </property>
-				  </properties>
-				</configuration>
-		      </plugin>	    
+				</properties>
+			    </configuration>
+			</plugin>
+
 		 </plugins>
 	</build>
 </project>
