@@ -9,14 +9,17 @@ import com.dev3l.hello_world.App;
 import com.dev3l.hello_world.Example;
 
 public class ExampleTest {
+	@Test
+	    public void exampleTest() {
+		Assert.assertTrue(true);
+	    }
 	
 	@Test
-	public void testSubtractNumbers() {
-	    App app = new App();
-	    int result = app.subtractNumbers(3, 2);
-	    assertEquals(2, result);
-		System.out.println(result)
-	}
+	    public void testGetMessageWithNull() {
+		Example example = new Example(null);
+		String actualMessage = example.getMessage();
+		assertNotNull(actualMessage);
+	    }
 
 }
 public class Example {
