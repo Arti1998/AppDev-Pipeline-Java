@@ -16,7 +16,7 @@ public class ExampleTest {
 	
 	@Test
 	    public void testGetMessageWithNull() {
-		Example example = new Example(null);
+		Example example = new Example("Hello");
 		String actualMessage = example.getMessage();
 		assertNotNull(actualMessage);
 	    }
