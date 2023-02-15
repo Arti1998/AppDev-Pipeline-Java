@@ -2,13 +2,12 @@ package com.dev3l.hello_world.test;
 
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-import net.sourceforge.jwebunit.junit.JWebUnitRunner;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 
-@RunWith(JWebUnitRunner.class)
+
+
 public class ExampleTest {
 	
 	
