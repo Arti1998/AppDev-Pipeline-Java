@@ -21,7 +21,8 @@ pipeline {
     stages {
         stage('Code Checkout') {
              steps {
-                https://github.com/Arti1998/AppDev-Pipeline-Java.git
+                bat label: '', script: 'mvn install:install-file -Dfile="C:/jwebunit-3.2-release/" -DgroupId=net.sourceforge.jwebunit -DartifactId=jwebunit-core -Dversion=3.2 -Dpackaging=jar'
+
                 checkout scmGit(branches: [[name: '*/aratik-java-app']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-java', url: 'https://github.com/ranjitaws2020/AppDev-Pipeline-Java.git']])
                 bat label: '', script: 'mvn clean install'
             }
