@@ -21,6 +21,13 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		    <groupId>net.sourceforge.jwebunit</groupId>
+		    <artifactId>jwebunit-core</artifactId>
+		    <version>3.3</version>
+		    <scope>test</scope>
+		</dependency>
+
 		<!-- log4j -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
