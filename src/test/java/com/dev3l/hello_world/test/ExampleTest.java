@@ -65,7 +65,7 @@ public class ExampleTest {
 	 @Test
 	    public void testWebPageAgain() {
 		// Navigate to the web page
-		driver.get("http://localhost:7171/index.jsp");
+		driver.get("http://localhost:8443/index.jsp");
 
 		// Test the title
 		String title = driver.getTitle();
