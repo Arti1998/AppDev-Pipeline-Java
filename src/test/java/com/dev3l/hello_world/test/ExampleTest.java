@@ -1,6 +1,6 @@
 package com.dev3l.hello_world.test;
 
-import java.net.ServerSocket;
+
 
 
 import static org.junit.Assert.*;
@@ -68,11 +68,8 @@ public class ExampleTest {
 	 @Test
 	    public void testWebPageAgain() {
 		// Navigate to the web page
-		    ServerSocket serverSocket = new ServerSocket(0);
-			int port = serverSocket.getLocalPort();
-			System.out.println("Using dynamic port: " + port);
-
-		driver.get("http://localhost:"+port+"/index.jsp");
+		   
+		driver.get("http://localhost:8888/index.jsp");
 
 		// Test the title
 		String title = driver.getTitle();
