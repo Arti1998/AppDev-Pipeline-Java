@@ -1,41 +1,33 @@
 package com.dev3l.hello_world.test;
 
-import static net.sourceforge.jwebunit.junit.JWebUnit.*;
+import static org.junit.Assert.*;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
 
-import org.junit.Before;
 import org.junit.Test;
-
-
-
 
 public class ExampleTest {
 	
-	@Before
-	  public void setUp() {
-	    setBaseUrl("http://localhost:7171"); // replace with the URL of your web app
-	  }
-	
-	  @Test
-	  public void testWebPage() {
-	    beginAt("/index.jsp"); // replace with the path to your web app's index page
+	@Test
+	  public void testWebPage() throws IOException {
+	    // Make a request to the web page and get the response
+	    URL url = new URL("http://localhost:7171/index.jsp"); // replace with the URL of your web app
+	    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	    con.setRequestMethod("GET");
+	    int responseCode = con.getResponseCode();
+	    assertEquals(200, responseCode); // check that the response code is 200 OK
 
-	    // Test the title
-	    assertTitleEquals("Hello World! First Java Pipeline");
+	    // Read the response content and check for the title, body, image, and header
+	    Scanner scanner = new Scanner(con.getInputStream());
+	    String responseBody = scanner.useDelimiter("\\A").next();
+	    scanner.close();
 
-	    // Test the body
-	    assertTextPresent("Hello World! First Java Pipeline V0.1");
-	    assertTextPresent("Now with Arti K-CI-CD!New Change");
-
-	    // Test the image
-	    //assertElementPresent("img");
-	    //assertElementPresentAttribute("img", "src", "https://octodex.github.com/images/spidertocat.png");
-	    //assertElementPresentAttribute("img", "alt", "Spidertocat");
-	    //assertElementPresentAttribute("img", "class", "img-responsive center-block");
-	    //assertElementPresentAttribute("img", "style", "width:250px");
-
-	    // Test the header
-	    assertElementPresent("h2");
-	    assertTextPresent("Hello World! First Java Pipeline V0.1");
+	    assertTrue(responseBody.contains("<title>Hello World! First Java Pipeline</title>")); // check for the title tag
+	    assertTrue(responseBody.contains("<h2 class=\"text-center\">Hello World! First Java Pipeline V0.1</h2>")); // check for the header
+	    assertTrue(responseBody.contains("<p class=\"text-center\">Now with Arti K-CI-CD!New Change</p>")); // check for the body
+	    assertTrue(responseBody.contains("<img src=\"https://octodex.github.com/images/spidertocat.png\" alt=\"Spidertocat\"")); // check for the image
 	  }
 
 }
