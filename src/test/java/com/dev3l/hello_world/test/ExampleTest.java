@@ -46,7 +46,7 @@ public class ExampleTest {
 	    }
 	
 	 @Test
-	    public void testWebPage() {
+	    public void testWebPageAgain() {
 		// Navigate to the web page
 		driver.get("http://localhost:7171/index.jsp");
 
