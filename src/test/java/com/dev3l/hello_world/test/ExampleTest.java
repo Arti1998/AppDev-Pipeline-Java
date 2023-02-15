@@ -10,11 +10,6 @@ import org.junit.Test;
 
 import org.junit.Before;
 
-import net.sourceforge.jwebunit.api.IElement;
-import net.sourceforge.jwebunit.junit.WebTester;
-import static net.sourceforge.jwebunit.junit.JWebUnit.assertAttributeEquals;
-
-
 import org.openqa.selenium.By;
 //import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -46,31 +41,7 @@ public class ExampleTest {
 	    assertTrue(responseBody.contains("<p class=\"text-center\">Now with Arti K-CI-CD!New Change</p>")); // check for the body
 	    assertTrue(responseBody.contains("<img src=\"https://octodex.github.com/images/spidertocat.png\" alt=\"Spidertocat\"")); // check for the image
 	  }
-	
-	 private WebTester tester;
-
-	 @Before
-	    public void setUpWebTester() {
-		tester = new WebTester();
-		tester.setBaseUrl("http://localhost:8085/JavaApp/");
-		tester.beginAt("/");
-	    }
-
-	 @Test
-	    public void testWebPageWithJWebUnit() {
-		tester.assertTitleEquals("Hello World! First Java Pipeline");
-
-		IElement header = tester.getElementByXPath("//h2[@class='text-center']");
-		tester.assertTextInElement(header, "Hello World! First Java Pipeline V0.1");
-
-		IElement body = tester.getElementByXPath("//p[@class='text-center']");
-		tester.assertTextInElement(body, "Now with Arti K-CI-CD!New Change");
-
-		IElement image = tester.getElementByXPath("//img[@alt='Spidertocat']");
-		tester.assertAttributeEquals(image, "src", "https://octodex.github.com/images/spidertocat.png");
-	    }
-	
-	
+		
 	 private WebDriver driver;
 
 	 @Before
@@ -88,7 +59,6 @@ public class ExampleTest {
 
 		// Instantiate EdgeDriver
 		driver = new EdgeDriver();
-
 
 	    }
 	
