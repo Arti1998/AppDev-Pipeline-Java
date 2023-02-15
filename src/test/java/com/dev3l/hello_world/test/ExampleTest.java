@@ -65,7 +65,11 @@ public class ExampleTest {
 	 @Test
 	    public void testWebPageAgain() {
 		// Navigate to the web page
-		driver.get("http://localhost:8443/index.jsp");
+		    ServerSocket serverSocket = new ServerSocket(0);
+			int port = serverSocket.getLocalPort();
+			System.out.println("Using dynamic port: " + port);
+
+		driver.get("http://localhost:"+port+"/index.jsp");
 
 		// Test the title
 		String title = driver.getTitle();
