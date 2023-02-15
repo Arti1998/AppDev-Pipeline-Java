@@ -41,8 +41,13 @@ public class ExampleTest {
 	 @Before
 	    public void setUp() {
 		// Configure the WebDriver to use Chrome
-		System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe");
-		driver = new ChromeDriver();
+		//System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe");
+		//driver = new ChromeDriver();
+		    
+		// Configure the WebDriver to use Microsoft Edge
+		System.setProperty("webdriver.edge.driver", "C:/msedgedriver.exe");
+		driver = new EdgeDriver();
+
 	    }
 	
 	 @Test
