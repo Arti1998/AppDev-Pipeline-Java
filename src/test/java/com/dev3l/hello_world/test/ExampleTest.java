@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
+@RunWith(JWebUnitRunner.class)
 public class ExampleTest {
 	
 	
