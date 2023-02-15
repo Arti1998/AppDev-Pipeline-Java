@@ -1,18 +1,13 @@
 package com.dev3l.hello_world.test;
+
 import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 
 public class ExampleTest {
-	//@Test
-	//    public void exampleTest() {
-	//	Assert.assertTrue(true);
-	//    }
+	
 	
 	 @Test
 	  public void testWebPage() {
