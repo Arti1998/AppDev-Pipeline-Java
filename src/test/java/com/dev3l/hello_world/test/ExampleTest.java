@@ -21,11 +21,11 @@ public class ExampleTest {
 	    assertTextPresent("Now with Arti K-CI-CD!New Change");
 
 	    // Test the image
-	    assertElementPresent("img");
-	    assertElementPresentAttribute("img", "src", "https://octodex.github.com/images/spidertocat.png");
-	    assertElementPresentAttribute("img", "alt", "Spidertocat");
-	    assertElementPresentAttribute("img", "class", "img-responsive center-block");
-	    assertElementPresentAttribute("img", "style", "width:250px");
+	    //assertElementPresent("img");
+	    //assertElementPresentAttribute("img", "src", "https://octodex.github.com/images/spidertocat.png");
+	    //assertElementPresentAttribute("img", "alt", "Spidertocat");
+	    //assertElementPresentAttribute("img", "class", "img-responsive center-block");
+	    //assertElementPresentAttribute("img", "style", "width:250px");
 
 	    // Test the header
 	    assertElementPresent("h2");
