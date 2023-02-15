@@ -27,7 +27,7 @@ public class Example {
     
     public Example() {
         // Default message
-        this.message = "Hello, world!";
+        this.message = "Welcome to DevOps!";
     }
     
     public Example(String message) {
