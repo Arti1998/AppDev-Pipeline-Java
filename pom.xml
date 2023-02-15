@@ -21,34 +21,20 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-		    <groupId>net.sourceforge.jwebunit</groupId>
-		    <artifactId>jwebunit-core</artifactId>
-		    <version>3.2</version>
-		    <scope>test</scope>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>3.141.59</version>
 		</dependency>
-		<dependency>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-surefire-plugin</artifactId>
-		  <version>3.0.0-M9</version>
-		  <type>maven-plugin</type>
-		</dependency>
+		
 		<dependency>
 		  <groupId>io.github.bonigarcia</groupId>
 		  <artifactId>webdrivermanager</artifactId>
 		  <version>5.1.1</version>
 		  <scope>test</scope>
 		</dependency>
-		<dependency>
-		  <groupId>org.uncommons</groupId>
-		  <artifactId>reportng</artifactId>
-		  <version>1.1.4</version>
-		</dependency>
+		
 
 		<!-- log4j -->
 		<dependency>
@@ -89,32 +75,6 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>			
-			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-surefire-plugin</artifactId>
-			    <version>3.0.0-M5</version>
-			    <configuration>
-				<testFailureIgnore>true</testFailureIgnore>
-				<argLine>-Xmx512m</argLine>
-				<parallel>methods</parallel>
-				<useUnlimitedThreads>true</useUnlimitedThreads>
-				<threadCountMethods>5</threadCountMethods>
-				<reportsDirectory>target/surefire-reports</reportsDirectory>
-				<reportFormat>xml</reportFormat>
-				<useFile>true</useFile>
-				<fileEncoding>UTF-8</fileEncoding>
-				<includes>
-				    <include>**/*.java</include>
-				</includes>
-				<properties>
-				    <property>
-					<name>listener</name>
-					<value>org.uncommons.reportng.HTMLReporter, org.uncommons.reportng.JUnitXMLReporter</value>
-				    </property>
-				</properties>
-			    </configuration>
-			</plugin>
-
-		 </plugins>
+		</plugins>
 	</build>
 </project>
