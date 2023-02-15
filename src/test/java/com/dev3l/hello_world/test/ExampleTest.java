@@ -56,7 +56,7 @@ public class ExampleTest {
 		WebDriverManager.edgedriver().setup();
 
 		// Instantiate EdgeDriver
-		WebDriver driver = new EdgeDriver();
+		driver = new EdgeDriver();
 
 
 	    }
