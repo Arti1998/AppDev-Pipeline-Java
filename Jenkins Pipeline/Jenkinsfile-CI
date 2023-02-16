@@ -30,7 +30,6 @@ pipeline {
          stage('Test') {
             steps {
                  powershell label:'', script: 'mvn test'
-                junit 'target/surefire-reports/*.xml'
             }
              post {
                 always {
