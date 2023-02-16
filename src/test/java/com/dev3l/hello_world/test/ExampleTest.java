@@ -1,8 +1,5 @@
 package com.dev3l.hello_world.test;
 
-
-
-
 import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -45,6 +42,8 @@ public class ExampleTest {
 	    assertTrue(responseBody.contains("<img src=\"https://octodex.github.com/images/spidertocat.png\" alt=\"Spidertocat\"")); // check for the image
 	  }
 		
+	 private WebDriver driver;
+		driver.quit();
 	 private WebDriver driver;
 
 	 @Before
