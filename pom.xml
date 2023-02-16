@@ -67,6 +67,10 @@
 			      <version>2.22.2</version>
 			      <configuration>
     				<reportsDirectory>target/surefire-reports/</reportsDirectory>
+				    <reportFormat>xml</reportFormat>
+				    <useFile>false</useFile>
+				    <printSummary>true</printSummary>
+				    <redirectTestOutputToFile>true</redirectTestOutputToFile>
 				<testFailureIgnore>true</testFailureIgnore>
 				<argLine>-Xmx1024m</argLine>
 				<includes>
@@ -76,6 +80,23 @@
 				</includes>
 			      </configuration>
 			 </plugin>
+			 <plugin>
+			    <groupId>com.github.goldin</groupId>
+			    <artifactId>junit-html-report-plugin</artifactId>
+			    <version>0.3.0</version>
+			    <configuration>
+				<sourceDirectory>target/surefire-reports</sourceDirectory>
+				<outputDirectory>target/junit-html-report</outputDirectory>
+			    </configuration>
+			    <executions>
+				<execution>
+				    <phase>test</phase>
+				    <goals>
+					<goal>render</goal>
+				    </goals>
+				</execution>
+			    </executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
