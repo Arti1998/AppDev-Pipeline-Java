@@ -32,6 +32,11 @@ pipeline {
                  powershell label:'', script: 'mvn test'
                 junit 'target/surefire-reports/*.xml'
             }
+             post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
         }
         stage('Sonar Analysis') {
            steps {
