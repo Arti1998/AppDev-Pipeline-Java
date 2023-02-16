@@ -19,15 +19,15 @@ pipeline {
     }
     
     stages {
-        stage('Code Checkout') {
+        stage('Build') {
              steps {
                 
-                checkout scmGit(branches: [[name: '*/aratik-java-app']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-java', url: 'https://github.com/ranjitaws2020/AppDev-Pipeline-Java.git']])
+                //checkout scmGit(branches: [[name: '*/aratik-java-app']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-java', url: 'https://github.com/ranjitaws2020/AppDev-Pipeline-Java.git']])
                 bat label: '', script: 'mvn clean'
                 bat label: '', script: 'mvn install'
             }
         }
-         stage('test') {
+         stage('Test') {
             steps {
                  powershell label:'', script: 'mvn test'
                 junit 'target/surefire-reports/*.xml'
