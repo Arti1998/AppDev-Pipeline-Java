@@ -38,7 +38,7 @@ public class ExampleTest {
 		  }
 
 	 @Test
-		public void testWebPage() throws IOException {
+		public void testWebPageAgain() throws IOException {
 		    // Read the content of the JSP file
 		    String filePath = "src/main/webapp/index.jsp"; // replace with the actual file path
 		    BufferedReader reader = new BufferedReader(new FileReader(filePath));
