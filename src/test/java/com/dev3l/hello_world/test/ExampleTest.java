@@ -43,8 +43,7 @@ public class ExampleTest {
 	  }
 		
 	 private WebDriver driver;
-		driver.quit();
-	 private WebDriver driver;
+		
 
 	 @Before
 	    public void setUp() {
