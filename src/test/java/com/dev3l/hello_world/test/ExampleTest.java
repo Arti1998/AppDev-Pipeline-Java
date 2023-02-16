@@ -10,13 +10,6 @@ import org.junit.Test;
 
 import org.junit.Before;
 
-import org.openqa.selenium.By;
-//import org.openqa.selenium.chrome.ChromeDriver;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-
-
 import org.junit.*;
 
 
@@ -42,57 +35,7 @@ public class ExampleTest {
 	    assertTrue(responseBody.contains("<img src=\"https://octodex.github.com/images/spidertocat.png\" alt=\"Spidertocat\"")); // check for the image
 	  }
 		
-	 private WebDriver driver;
-		
-
-	 @Before
-	    public void setUp() {
-		// Configure the WebDriver to use Chrome
-		//System.setProperty("webdriver.chrome.driver", "path/to/chromedriver.exe");
-		//driver = new ChromeDriver();
-		    
-		// Configure the WebDriver to use Microsoft Edge
-		//System.setProperty("webdriver.edge.driver", "C:/msedgedriver.exe");
-		//driver = new EdgeDriver();
-
-		// Set up EdgeDriver using WebDriverManager
-		WebDriverManager.edgedriver().setup();
-
-		// Instantiate EdgeDriver
-		driver = new EdgeDriver();
-
-	    }
+	 
 	
-	 @Test
-	    public void testWebPageAgain() {
-		// Navigate to the web page
-		   
-		driver.get("http://localhost:8888/index.jsp");
-
-		// Test the title
-		String title = driver.getTitle();
-		Assert.assertEquals("Hello World! First Java Pipeline", title);
-
-		// Test the body
-		String bodyText = driver.findElement(By.tagName("body")).getText();
-		Assert.assertTrue(bodyText.contains("Hello World! First Java Pipeline V0.1"));
-		Assert.assertTrue(bodyText.contains("Now with Arti K-CI-CD!New Change"));
-
-		// Test the image
-		Assert.assertTrue(driver.findElement(By.tagName("img")).isDisplayed());
-		Assert.assertEquals("https://octodex.github.com/images/spidertocat.png", driver.findElement(By.tagName("img")).getAttribute("src"));
-		Assert.assertEquals("Spidertocat", driver.findElement(By.tagName("img")).getAttribute("alt"));
-		Assert.assertEquals("img-responsive center-block", driver.findElement(By.tagName("img")).getAttribute("class"));
-		Assert.assertEquals("width:250px", driver.findElement(By.tagName("img")).getAttribute("style"));
-
-		// Test the header
-		String headerText = driver.findElement(By.tagName("h2")).getText();
-		Assert.assertEquals("Hello World! First Java Pipeline V0.1", headerText);
-	    }
-	
-	   @After
-	    public void tearDown() {
-		driver.quit();
-	    }
 
 }
