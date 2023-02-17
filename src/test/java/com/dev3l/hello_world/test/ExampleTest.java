@@ -31,7 +31,7 @@ public class ExampleTest {
 		    String responseBody = scanner.useDelimiter("\\A").next();
 		    scanner.close();
 
-		    assertTrue(responseBody.contains("<title>Hello World! First Java Pipeline</title>")); // check for the title tag
+		    assertTrue(responseBody.contains("<title>World! First Java Pipeline</title>")); // check for the title tag
 		    assertTrue(responseBody.contains("<h2 class=\"text-center\">Hello World! First Java Pipeline V0.1</h2>")); // check for the header
 		    assertTrue(responseBody.contains("<p class=\"text-center\">Now with Arti K-CI-CD!New Change</p>")); // check for the body
 		    assertTrue(responseBody.contains("<img src=\"https://octodex.github.com/images/spidertocat.png\" alt=\"Spidertocat\"")); // check for the image
