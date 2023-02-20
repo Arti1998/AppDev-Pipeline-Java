@@ -1,3 +1,5 @@
+@Library('github.com/ranjitaws2020/java-shared-library@pipeline') _
+
 pipeline {
     agent any
 
@@ -20,16 +22,13 @@ pipeline {
     
     stages {
         stage('Build') {
-             steps {
-                
-                //checkout scmGit(branches: [[name: '*/aratik-java-app']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-java', url: 'https://github.com/ranjitaws2020/AppDev-Pipeline-Java.git']])
-                bat label: '', script: 'mvn clean'
-                bat label: '', script: 'mvn install -DskipTests'
-            }
+             steps {                
+                BuildApp()
+             }
         }
          stage('Test') {
             steps {
-                 powershell label:'', script: 'mvn test'
+                 TestApp()
             }
              post {
                 always {
@@ -39,7 +38,8 @@ pipeline {
         }
         stage('Sonar Analysis') {
            steps {
-               bat label: '', script: """mvn clean verify sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${sonarlogin}"""            
+               SonarApp(sonarlogin)
+               //bat label: '', script: """mvn clean verify sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=${sonarlogin}"""            
            }
         }
          stage('Store war to Nexus') {
