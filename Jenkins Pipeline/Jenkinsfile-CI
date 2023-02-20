@@ -24,7 +24,7 @@ pipeline {
                 
                 //checkout scmGit(branches: [[name: '*/aratik-java-app']], extensions: [], userRemoteConfigs: [[credentialsId: 'git-java', url: 'https://github.com/ranjitaws2020/AppDev-Pipeline-Java.git']])
                 bat label: '', script: 'mvn clean'
-                bat label: '', script: 'mvn install'
+                bat label: '', script: 'mvn install -DskipTests'
             }
         }
          stage('Test') {
