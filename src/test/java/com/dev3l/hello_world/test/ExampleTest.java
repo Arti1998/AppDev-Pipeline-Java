@@ -51,7 +51,7 @@ public class ExampleTest {
 		    String content = builder.toString();
 
 		    // Check for the title, header, body, and image tags
-		    assertTrue(content.contains("<title>Hello World! First Java Pipeline</title>"));
+		    assertTrue(content.contains("<title>Heo World! First Java Pipeline</title>"));
 		    assertTrue(content.contains("<h2 class=\"text-center\">Hello World! First Java Pipeline V0.1</h2>"));
 		    assertTrue(content.contains("<p class=\"text-center\">Now with Arti K-CI-CD!New Change</p>"));
 		    assertTrue(content.contains("<img src=\"https://octodex.github.com/images/spidertocat.png\" alt=\"Spidertocat\""));
