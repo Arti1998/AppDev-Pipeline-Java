@@ -1,3 +1,3 @@
-FROM tomcat
+FROM tomcat:9.0.43-jdk11
 
-ADD JavaMaven.war /usr/local/tomcat/webapps/JavaMaven.war
+COPY JavaMaven.war $CATALINA_HOME/webapps/
