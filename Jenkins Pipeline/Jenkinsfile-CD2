@@ -3,8 +3,8 @@
 pipeline {
     agent any
     
-    stages {  
-        stage('Provision Infrastructure') {
+    stages {
+        stage('Provision Infrastructure') {
             steps {
                   bat label: '', script: """
                   terraform  -chdir=infra init -input=false
