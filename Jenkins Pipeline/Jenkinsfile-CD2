@@ -1,3 +1,5 @@
+@Library('github.com/ranjitaws2020/java-shared-library@pipeline') _
+
 pipeline {
     agent any
     
@@ -9,6 +11,11 @@ pipeline {
                   terraform  -chdir=infra plan -out=tfplan -input=false
                   terraform  -chdir=infra apply -input=false tfplan   
                   """
+            }
+        }
+        stage('Pull the file off Nexus') {
+            steps{
+                  DownloadFromNexus()                    
             }
         }
         stage('Deploy Artifact') {
