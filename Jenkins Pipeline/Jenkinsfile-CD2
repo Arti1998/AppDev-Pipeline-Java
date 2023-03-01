@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Create SSH credentials') {
             environment {
-                SSH_KEY = sh(script: 'cat /infra/linuxkey.pem', returnStdout: true).trim()
+                SSH_KEY = sh(script: 'cat ./infra/linuxkey.pem', returnStdout: true).trim()
             }
             steps {
                 // Create SSH credentials dynamically using the SSH_KEY
