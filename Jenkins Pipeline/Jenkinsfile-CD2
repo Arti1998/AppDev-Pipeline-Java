@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Provision Infrastructure') {
+            steps {
+                sh 'terraform init'
+                sh 'terraform apply -auto-approve'
+            }
+        }
+        
+        stage('Deploy Artifact') {
+            steps {
+                script {
+                    sshagent(['<SSH_CREDENTIALS>']) {
+                        sh "ssh <USER>@<VM_IP> 'docker build -t <IMAGE_NAME>:<TAG> .'"
+                        sh "ssh <USER>@<VM_IP> 'docker save <IMAGE_NAME>:<TAG> | docker load'"
+                        sh "ssh <USER>@<VM_IP> 'docker run -d --name <CONTAINER_NAME> -p <HOST_PORT>:<CONTAINER_PORT> <IMAGE_NAME>:<TAG>'"
+                    }
+                }
+            }
+        }
+        
+      
+    }
+}
