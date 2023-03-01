@@ -11,8 +11,26 @@ pipeline {
                   """
             }
         }
-        
-      
-      
+        stage('Deploy Artifact') {
+            steps {
+                script {
+                    sshagent(['./infra/linux_key.pem']) {
+                        remote {
+                            // Set the connection details for the remote host
+                            name = 'azurevm'
+                            user = 'linuxusr'
+                            allowAnyHosts = true
+                            host = 'linuxvm'
+                            identityFile = './infra/linux_key.pem'
+
+                            // Execute the Docker commands on the remote host
+                            sh "docker build -t javasampletomcat:latest ."
+                            sh "docker save javasampletomcat:latest | docker load"
+                            sh "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"
+                           }
+                        }
+                   }
+               }
+          }
     }
 }
