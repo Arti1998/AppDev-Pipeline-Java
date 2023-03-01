@@ -3,29 +3,32 @@
 pipeline {
     agent any
     
-    stages {
-     
-      
+    stages {  
+        stage('Provision Infrastructure') {
+            steps {
+                  bat label: '', script: """
+                  terraform  -chdir=infra init -input=false
+                  terraform  -chdir=infra plan -out=tfplan -input=false
+                  terraform  -chdir=infra apply -input=false tfplan   
+                  """
+            }
+        }
+        stage('Pull the file off Nexus') {
+            steps{
+                  DownloadFromNexus()                    
+            }
+        }
         stage('Deploy Artifact') {
-          environment {
-                SSH_KEY = sh(script: 'cat ./infra/linuxkey.pem', returnStdout: true).trim()
-            }
             steps {
                 script {
-                    sshagent(['SSH_KEY']) {
-                        remote {
-                            // Set the connection details for the remote host
-                            name = 'azurevm'
-                            user = 'linuxusr'
-                            allowAnyHosts = true
-                            host = 'linuxvm'
-                            identityFile = SSH_KEY
+                    def sshKey = sh(script: 'cat ./infra/linuxkey.pem', returnStdout: true).trim()
 
-                            // Execute the Docker commands on the remote host
-                            sh "docker build -t javasampletomcat:latest ."
-                            sh "docker save javasampletomcat:latest | docker load"
-                            sh "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"
-                        }
+                    sshagent(['']) {
+                        sh """
+                            ssh -o StrictHostKeyChecking=no -i ${sshKey} linuxusr@linuxvm 'docker build -t javasampletomcat:latest .'
+                            ssh -o StrictHostKeyChecking=no -i ${sshKey} linuxusr@linuxvm 'docker save javasampletomcat:latest | docker load'
+                            ssh -o StrictHostKeyChecking=no -i ${sshKey} linuxusr@linuxvm 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
+                        """
                     }
                 }
             }
