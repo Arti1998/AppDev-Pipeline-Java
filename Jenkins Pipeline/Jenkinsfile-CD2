@@ -4,42 +4,22 @@ pipeline {
     agent any
     
     stages {
-        stage('Provision Infrastructure') {
-            steps {
-                  bat label: '', script: """
-                  terraform  -chdir=infra init -input=false
-                  terraform  -chdir=infra plan -out=tfplan -input=false
-                  terraform  -chdir=infra apply -input=false tfplan   
-                  """
-            }
-        }
-        stage('Pull the file off Nexus') {
-            steps{
-                  DownloadFromNexus()                    
-            }
-        }
-        stage('Create SSH credentials') {
-            environment {
+     
+      
+        stage('Deploy Artifact') {
+          environment {
                 SSH_KEY = sh(script: 'cat ./infra/linuxkey.pem', returnStdout: true).trim()
             }
             steps {
-                // Create SSH credentials dynamically using the SSH_KEY
-                withCredentials([sshUserPrivateKey(credentialsId: 'my-ssh-credentials', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
-                    sh 'echo "SSH credentials created"'
-                }
-            }
-        }
-        stage('Deploy Artifact') {
-            steps {
                 script {
-                    sshagent(['my-ssh-credentials']) {
+                    sshagent(['SSH_KEY']) {
                         remote {
                             // Set the connection details for the remote host
                             name = 'azurevm'
-                            user = env.SSH_USER
+                            user = 'linuxusr'
                             allowAnyHosts = true
                             host = 'linuxvm'
-                            identityFile = env.SSH_KEY
+                            identityFile = SSH_KEY
 
                             // Execute the Docker commands on the remote host
                             sh "docker build -t javasampletomcat:latest ."
