@@ -4,23 +4,15 @@ pipeline {
     stages {
         stage('Provision Infrastructure') {
             steps {
-                sh 'terraform init'
-                sh 'terraform apply -auto-approve'
+                  bat label: '', script: """
+                  terraform  -chdir=infra init -input=false
+                  terraform  -chdir=infra plan -out=tfplan -input=false
+                  terraform  -chdir=infra apply -input=false tfplan   
+                  """
             }
         }
         
-        stage('Deploy Artifact') {
-            steps {
-                script {
-                    sshagent(['<SSH_CREDENTIALS>']) {
-                        sh "ssh <USER>@<VM_IP> 'docker build -t <IMAGE_NAME>:<TAG> .'"
-                        sh "ssh <USER>@<VM_IP> 'docker save <IMAGE_NAME>:<TAG> | docker load'"
-                        sh "ssh <USER>@<VM_IP> 'docker run -d --name <CONTAINER_NAME> -p <HOST_PORT>:<CONTAINER_PORT> <IMAGE_NAME>:<TAG>'"
-                    }
-                }
-            }
-        }
-        
+      
       
     }
 }
