@@ -21,14 +21,14 @@ pipeline {
         stage('Deploy Artifact') {
             steps {
                 script {
-                    sshagent(['./infra/linuxkey.pem']) {
+                    sshagent(['.//infra//linuxkey.pem']) {
                         remote {
                             // Set the connection details for the remote host
                             name = 'azurevm'
                             user = 'linuxusr'
                             allowAnyHosts = true
                             host = 'linuxvm'
-                            identityFile = './infra/linuxkey.pem'
+                            identityFile = './/infra//linuxkey.pem'
 
                             // Execute the Docker commands on the remote host
                             sh "docker build -t javasampletomcat:latest ."
