@@ -90,9 +90,10 @@ resource "azurerm_network_interface" "app_interface" {
     subnet_id                     = azurerm_subnet.SubnetA.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id = azurerm_public_ip.app_public_ip.id
+    network_security_group_id = azurerm_network_security_group.example.id
   }
 
-  network_security_group_id = azurerm_network_security_group.example.id
+  
   depends_on = [
     azurerm_virtual_network.app_network,
     azurerm_public_ip.app_public_ip,
