@@ -37,20 +37,46 @@ pipeline {
         }
         stage('Deploy Artifact') {
             steps {
-            script{
-             def remote = [name: 'linuxvm', user: 'linuxusr',allowAnyHosts: true, host: '74.234.98.211', identityFile: 'linuxkey.pem']
-           
-                   
-                       // def publicIp = readFile 'public_ip.txt'
-                       
-                          sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
-                          sshPut remote: remote, from: 'LoginWebApp.war', into: '/temp'
-                          sshPut remote: remote, from: 'dockerfile', into: '/temp'
-                          sshCommand remote: remote, command: "cd /temp && docker build -t javasampletomcat:latest ."
-                          sshCommand remote: remote, command: "docker save javasampletomcat:latest | docker load"
-                          sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest" 
-                     
-                }              
+              withCredentials([sshUserPrivateKey(credentialsId: 'my-ssh-credentials', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                    sshagent(['my-ssh-credentials']) {
+                        sshCommand remote: [
+                            name: 'linuxvm',
+                            host: '74.234.98.211',
+                            user: "${SSH_USER}",
+                            identityFile: "${SSH_KEY}"
+                        ], command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
+                        sshCommand remote: [
+                            name: 'linuxvm',
+                            host: '74.234.98.211',
+                            user: "${SSH_USER}",
+                            identityFile: "${SSH_KEY}"
+                        ], from: 'LoginWebApp.war', into: '/temp'
+                         sshCommand remote: [
+                            name: 'linuxvm',
+                            host: '74.234.98.211',
+                            user: "${SSH_USER}",
+                            identityFile: "${SSH_KEY}"
+                        ], from: 'dockerfile', into: '/temp'
+                        sshCommand remote: [
+                            name: 'linuxvm',
+                            host: '74.234.98.211',
+                            user: "${SSH_USER}",
+                            identityFile: "${SSH_KEY}"
+                        ], command: 'cd /temp && docker build -t javasampletomcat:latest .'
+                        sshCommand remote: [
+                            name: 'linuxvm',
+                            host: '74.234.98.211',
+                            user: "${SSH_USER}",
+                            identityFile: "${SSH_KEY}"
+                        ], command: 'cd /temp && docker save javasampletomcat:latest | docker load'
+                        sshCommand remote: [
+                            name: 'linuxvm',
+                            host: '74.234.98.211',
+                            user: "${SSH_USER}",
+                            identityFile: "${SSH_KEY}"
+                        ], command: 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
+                    }
+                }       
             }
         }
     }
