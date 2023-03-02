@@ -45,14 +45,11 @@ pipeline {
                    
                         def publicIp = readFile 'public_ip.txt'
                         
-                        def cmd1 = "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
+                        sh 'sudo mkdir -p /temp && sudo chmod -R 777 /temp'
                     
                         // upload files to the remote VM
-                        def cmd2 = "scp -o StrictHostKeyChecking=no -i ${SSH_KEY} JavaMaven.war ${SSH_USER}@${publicIp}:/temp"
-                        def cmd3 = "scp -o StrictHostKeyChecking=no -i ${SSH_KEY} dockerfile ${SSH_USER}@${publicIp}:/temp"
-                        execute cmd1
-                        execute cmd2
-                        execute cmd3
+                        sh 'scp -o StrictHostKeyChecking=no -i ${SSH_KEY} JavaMaven.war ${SSH_USER}@${publicIp}:/temp'
+                        sh 'scp -o StrictHostKeyChecking=no -i ${SSH_KEY} dockerfile ${SSH_USER}@${publicIp}:/temp'
                         sh '''
                               ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'cd /temp && docker build -t javasampletomcat:latest .'
                               ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'docker save javasampletomcat:latest | docker load'
