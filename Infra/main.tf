@@ -90,15 +90,18 @@ resource "azurerm_network_interface" "app_interface" {
     subnet_id                     = azurerm_subnet.SubnetA.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id = azurerm_public_ip.app_public_ip.id
-    network_security_group_id = azurerm_network_security_group.example.id
   }
-
-  
   depends_on = [
     azurerm_virtual_network.app_network,
     azurerm_public_ip.app_public_ip,
     azurerm_network_security_group.example
   ]
+}
+
+# Connect the security group to the network interface
+resource "azurerm_network_interface_security_group_association" "example" {
+  network_interface_id      = azurerm_network_interface.app_interface.id
+  network_security_group_id = azurerm_network_security_group.example.id
 }
 
 resource "azurerm_linux_virtual_machine" "linux_vm" {
