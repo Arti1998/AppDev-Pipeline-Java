@@ -39,9 +39,7 @@ pipeline {
             steps {
             script{
              def remote = [name: 'linuxvm', user: 'linuxusr',allowAnyHosts: true, host: '74.234.98.211', identityFile: 'linuxkey.pem']
-                       
-                    withCredentials([sshUserPrivateKey(credentialsId: 'my-ssh-credentials', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {                    sshagent(['my-ssh-credentials']) {
-                        sh 'chmod 400 ${SSH_KEY}'
+           
                    
                        // def publicIp = readFile 'public_ip.txt'
                        
