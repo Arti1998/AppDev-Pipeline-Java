@@ -37,11 +37,11 @@ pipeline {
                 // use sshagent to execute commands on the remote VM
                withCredentials([sshUserPrivateKey(credentialsId: 'my-ssh-credentials', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                     sshagent(['my-ssh-credentials']) {
-                        sh """
-                        ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} $SSH_USER@${env.PUBLIC_IP} 'docker build -t javasampletomcat:latest .'
-                        ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} $SSH_USER@${env.PUBLIC_IP} 'docker save javasampletomcat:latest | docker load'
-                        ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} $SSH_USER@${env.PUBLIC_IP} 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
-                        """
+                         ssh remote: "${SSH_USER}@${env.PUBLIC_IP}", command: """
+                              docker build -t javasampletomcat:latest .
+                              docker save javasampletomcat:latest | docker load
+                              docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest
+                            """
                     }
                 }
             }
