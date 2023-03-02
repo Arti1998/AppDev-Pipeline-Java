@@ -50,7 +50,7 @@ pipeline {
                             scp -o StrictHostKeyChecking=no -i ${SSH_KEY} dockerfile ${SSH_USER}@74.234.98.211:/temp/
                             scp -o StrictHostKeyChecking=no -i ${SSH_KEY} JavaMaven.war ${SSH_USER}@74.234.98.211:/temp/
                          '''
-                    
+                        sshCommand remote: "linuxusr@74.234.98.211", command:"sudo usermod -aG docker jenkins"
                         sh '''
                               ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'cd /temp && docker build -t javasampletomcat:latest .'
                               ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'docker save javasampletomcat:latest | docker load'
