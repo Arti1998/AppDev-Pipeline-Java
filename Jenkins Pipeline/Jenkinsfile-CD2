@@ -25,9 +25,9 @@ pipeline {
             steps {
                 // fetch public IP of the VM using Azure CLI
                 script {
-                    def publicIp = sh(
-                        returnStdout: true,
-                        script: "az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv"
+                    def publicIp = bat label: '', returnStdout: true, script: """
+                        script: "az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
+                        """
                     ).trim()
                     env.PUBLIC_IP = publicIp
                 }
