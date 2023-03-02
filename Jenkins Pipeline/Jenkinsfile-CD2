@@ -44,12 +44,14 @@ pipeline {
                         sh 'chmod 400 ${SSH_KEY}'
                    
                         def publicIp = readFile 'public_ip.txt'
-                          sshCommand remote: "linuxusr@74.234.98.211", command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
-                          sshPut remote: "linuxusr@74.234.98.211", from: 'LoginWebApp.war', into: '/temp'
-                          sshPut remote: "linuxusr@74.234.98.211", from: 'dockerfile', into: '/temp'
-                          sshCommand remote: "linuxusr@74.234.98.211", command: "cd /temp && docker build -t javasampletomcat:latest ."
-                          sshCommand remote: "linuxusr@74.234.98.211", command: "docker save javasampletomcat:latest | docker load"
-                          sshCommand remote: "linuxusr@74.234.98.211", command: "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"
+                        def remote = [user: 'linuxusr', host: '74.234.98.211', identityFile: '${SSH_KEY}']
+                       
+                          sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
+                          sshPut remote: remote, from: 'LoginWebApp.war', into: '/temp'
+                          sshPut remote: remote, from: 'dockerfile', into: '/temp'
+                          sshCommand remote: remote, command: "cd /temp && docker build -t javasampletomcat:latest ."
+                          sshCommand remote: remote, command: "docker save javasampletomcat:latest | docker load"
+                          sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"
                          
                         }
                     }
