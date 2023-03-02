@@ -42,8 +42,8 @@ pipeline {
                     sshagent(['my-ssh-credentials']) {
                         script {
                         sh 'chmod 400 ${SSH_KEY}'
-                        sh 'systemctl status ssh'
-                        sh 'systemctl start ssh'
+                        sh 'sudo systemctl status ssh'
+                        sh 'sudo systemctl start ssh'
                         def publicIp = readFile 'public_ip.txt'
                            sh '''
                               ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${publicIp} 'docker build -t javasampletomcat:latest .'
