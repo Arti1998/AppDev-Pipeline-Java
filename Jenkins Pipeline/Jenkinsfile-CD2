@@ -45,11 +45,11 @@ pipeline {
                    
                         def publicIp = readFile 'public_ip.txt'
                         
-                        sshCommand remote: 74.234.98.211, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
-
-                        // upload files
-                        sshPut remote: 74.234.98.211, from: 'Dockerfile', into: '/temp'
-                        sshPut remote: 74.234.98.211, from: 'JavaMaven.war', into: '/temp'
+                         sh '''
+                            ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'sudo mkdir -p /temp && sudo chmod -R 777 /temp'
+                            scp -o StrictHostKeyChecking=no -i ${SSH_KEY} dockerfile ${SSH_USER}@74.234.98.211:/temp/
+                            scp -o StrictHostKeyChecking=no -i ${SSH_KEY} LoginWebApp.war ${SSH_USER}@74.234.98.211:/temp/
+                         '''
                     
                         sh '''
                               ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'cd /temp && docker build -t javasampletomcat:latest .'
