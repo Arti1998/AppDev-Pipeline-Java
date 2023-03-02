@@ -19,10 +19,10 @@ pipeline {
             }
         }
         stage('Fetch Public IP') {
-            steps {
-            environment {
+         environment {
                         PATH = "${env.PATH};C:\\Program Files (x86)\\Microsoft SDKs\\Azure\\CLI2\\wbin"
                     }
+            steps {
                 // fetch public IP of the VM using Azure CLI
                 script {
                     def publicIp = sh(
