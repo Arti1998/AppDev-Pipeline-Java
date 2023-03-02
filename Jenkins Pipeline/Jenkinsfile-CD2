@@ -44,7 +44,7 @@ pipeline {
                         sh 'chmod 400 ${SSH_KEY}'
                    
                         def publicIp = readFile 'public_ip.txt'
-                        def remote = [name: 'linuxvm', user: 'linuxusr',allowAnyHosts: true, host: '74.234.98.211', identityFile: 'linuxkey.pem']
+                        def remote = [name: 'linuxvm', user: 'linuxusr',allowAnyHosts: true, host: '74.234.98.211']
                        
                           sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                           sshPut remote: remote, from: 'LoginWebApp.war', into: '/temp'
