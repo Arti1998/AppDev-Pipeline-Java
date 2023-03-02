@@ -21,13 +21,13 @@ pipeline {
         stage('Deploy Artifact') {
             steps {
                 script {
-                    def sshKey = sh(script: 'cat ./infra/linuxkey.pem', returnStdout: true).trim()
+                   //def sshKey = sh(script: 'cat ./infra/linuxkey.pem', returnStdout: true).trim()
 
-                    sshagent(['']) {
+                    sshagent(['SSHKey']) {
                         sh """
-                            ssh -o StrictHostKeyChecking=no -i ${sshKey} linuxusr@linuxvm 'docker build -t javasampletomcat:latest .'
-                            ssh -o StrictHostKeyChecking=no -i ${sshKey} linuxusr@linuxvm 'docker save javasampletomcat:latest | docker load'
-                            ssh -o StrictHostKeyChecking=no -i ${sshKey} linuxusr@linuxvm 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
+                            ssh -o StrictHostKeyChecking=no -i ${SSHKey} linuxusr@linuxvm 'docker build -t javasampletomcat:latest .'
+                            ssh -o StrictHostKeyChecking=no -i ${SSHKey} linuxusr@linuxvm 'docker save javasampletomcat:latest | docker load'
+                            ssh -o StrictHostKeyChecking=no -i ${SSHKey} linuxusr@linuxvm 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
                         """
                     }
                 }
