@@ -37,6 +37,7 @@ pipeline {
         }
         stage('Deploy Artifact') {
             steps {
+            script{
              def remote = [name: 'linuxvm', user: 'linuxusr',allowAnyHosts: true, host: '74.234.98.211', identityFile: 'linuxkey.pem']
                        
               
@@ -49,11 +50,8 @@ pipeline {
                           sshPut remote: remote, from: 'dockerfile', into: '/temp'
                           sshCommand remote: remote, command: "cd /temp && docker build -t javasampletomcat:latest ."
                           sshCommand remote: remote, command: "docker save javasampletomcat:latest | docker load"
-                          sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"
-                         
-                        
-                    
-                
+                          sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"                                              
+                }              
             }
         }
     }
