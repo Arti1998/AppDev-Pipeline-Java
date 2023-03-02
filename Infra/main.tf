@@ -62,6 +62,23 @@ resource "azurerm_public_ip" "app_public_ip" {
     azurerm_resource_group.app_grp
   ]
 }
+resource "azurerm_network_security_group" "example" {
+  name                = "example-nsg"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
+  security_rule {
+    name                       = "SSH"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
 
 resource "azurerm_network_interface" "app_interface" {
   name                = "app-interface"
@@ -75,9 +92,11 @@ resource "azurerm_network_interface" "app_interface" {
     public_ip_address_id = azurerm_public_ip.app_public_ip.id
   }
 
+  network_security_group_id = azurerm_network_security_group.example.id
   depends_on = [
     azurerm_virtual_network.app_network,
-    azurerm_public_ip.app_public_ip
+    azurerm_public_ip.app_public_ip,
+    azurerm_network_security_group.example
   ]
 }
 
