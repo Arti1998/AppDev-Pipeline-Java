@@ -43,37 +43,43 @@ pipeline {
                             name: 'linuxvm',
                             host: '74.234.98.211',
                             user: "${SSH_USER}",
-                            identityFile: "${SSH_KEY}"
+                            identityFile: "${SSH_KEY}",
+                            allowAnyHosts : true
                         ], command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                         sshCommand remote: [
                             name: 'linuxvm',
                             host: '74.234.98.211',
                             user: "${SSH_USER}",
-                            identityFile: "${SSH_KEY}"
+                            identityFile: "${SSH_KEY}",
+                            allowAnyHosts : true
                         ], from: 'LoginWebApp.war', into: '/temp'
                          sshCommand remote: [
                             name: 'linuxvm',
                             host: '74.234.98.211',
                             user: "${SSH_USER}",
-                            identityFile: "${SSH_KEY}"
+                            identityFile: "${SSH_KEY}",
+                            allowAnyHosts : true
                         ], from: 'dockerfile', into: '/temp'
                         sshCommand remote: [
                             name: 'linuxvm',
                             host: '74.234.98.211',
                             user: "${SSH_USER}",
-                            identityFile: "${SSH_KEY}"
+                            identityFile: "${SSH_KEY}",
+                            allowAnyHosts : true
                         ], command: 'cd /temp && docker build -t javasampletomcat:latest .'
                         sshCommand remote: [
                             name: 'linuxvm',
                             host: '74.234.98.211',
                             user: "${SSH_USER}",
-                            identityFile: "${SSH_KEY}"
+                            identityFile: "${SSH_KEY}",
+                            allowAnyHosts : true
                         ], command: 'cd /temp && docker save javasampletomcat:latest | docker load'
                         sshCommand remote: [
                             name: 'linuxvm',
                             host: '74.234.98.211',
                             user: "${SSH_USER}",
-                            identityFile: "${SSH_KEY}"
+                            identityFile: "${SSH_KEY}",
+                            allowAnyHosts : true
                         ], command: 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
                     }
                 }       
