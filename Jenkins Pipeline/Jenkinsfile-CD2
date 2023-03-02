@@ -25,10 +25,13 @@ pipeline {
             steps {
                 // fetch public IP of the VM using Azure CLI
                 script {
-                    def publicIp = bat label: '', returnStdout: true, script: """
-                        az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
-                    """.trim()
-                    env.PUBLIC_IP = publicIp
+                    bat label: '', script: '''
+                    az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv > public_ip.txt
+                    '''
+                    //def publicIp = bat label: '', returnStdout: true, script: """
+                    //    az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
+                    //""".trim()
+                    //env.PUBLIC_IP = publicIp
                 }
             }
         }
@@ -37,10 +40,11 @@ pipeline {
                 // use sshagent to execute commands on the remote VM
                withCredentials([sshUserPrivateKey(credentialsId: 'my-ssh-credentials', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                     sshagent(['my-ssh-credentials']) {
-                       powershell label: '', script: '''
-                          ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${env.PUBLIC_IP} 'docker build -t javasampletomcat:latest .'
-                          ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${env.PUBLIC_IP} 'docker save javasampletomcat:latest | docker load'
-                          ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${env.PUBLIC_IP} 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
+                    def publicIp = readFile 'public_ip.txt'
+                       sh '''
+                          ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${publicIp} 'docker build -t javasampletomcat:latest .'
+                          ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${publicIp} 'docker save javasampletomcat:latest | docker load'
+                          ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${publicIp} 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
                         '''
                     }
                 }
