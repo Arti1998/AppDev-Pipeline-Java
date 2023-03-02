@@ -20,18 +20,16 @@ pipeline {
         }
         stage('Deploy Artifact') {
             steps {
-                script {
-                   //def sshKey = sh(script: 'cat ./infra/linuxkey.pem', returnStdout: true).trim()
-
-                    sshagent(['SSHKey']) {
-                        sh """
-                            ssh -o StrictHostKeyChecking=no -i ${SSHKey} linuxusr@linuxvm 'docker build -t javasampletomcat:latest .'
-                            ssh -o StrictHostKeyChecking=no -i ${SSHKey} linuxusr@linuxvm 'docker save javasampletomcat:latest | docker load'
-                            ssh -o StrictHostKeyChecking=no -i ${SSHKey} linuxusr@linuxvm 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
-                        """
+                   withCredentials([sshUserPrivateKey(credentialsId: 'my-ssh-credentials', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                   sshagent(['my-ssh-credentials']) {
+                     sh """
+                         ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${SSH_HOST} 'docker build -t javasampletomcat:latest .'
+                         ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${SSH_HOST} 'docker save javasampletomcat:latest | docker load'
+                         ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@${SSH_HOST} 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
+                     """
+                      }
                     }
-                }
-            }
-        }
+               }
+          }
     }
 }
