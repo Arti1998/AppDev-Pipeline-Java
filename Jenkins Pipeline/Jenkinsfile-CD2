@@ -44,11 +44,20 @@ pipeline {
                         sh 'chmod 400 ${SSH_KEY}'
                    
                         def publicIp = readFile 'public_ip.txt'
-                           sh '''
-                              ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'docker build -t javasampletomcat:latest .'
+                        
+                        def cmd1 = "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
+                    
+                        // upload files to the remote VM
+                        def cmd2 = "scp -o StrictHostKeyChecking=no -i ${SSH_KEY} JavaMaven.war ${SSH_USER}@${publicIp}:/temp"
+                        def cmd3 = "scp -o StrictHostKeyChecking=no -i ${SSH_KEY} dockerfile ${SSH_USER}@${publicIp}:/temp"
+                        execute cmd1
+                        execute cmd2
+                        execute cmd3
+                        sh '''
+                              ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'cd /temp && docker build -t javasampletomcat:latest .'
                               ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'docker save javasampletomcat:latest | docker load'
                               ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USER}@74.234.98.211 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
-                            '''
+                        '''
                         }
                     }
                 }
