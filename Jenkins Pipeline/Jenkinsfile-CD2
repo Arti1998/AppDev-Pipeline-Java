@@ -19,16 +19,15 @@ pipeline {
             }
         }
         stage('Fetch Public IP') {
-         environment {
-                        PATH = "${env.PATH};C:\\Program Files (x86)\\Microsoft SDKs\\Azure\\CLI2\\wbin"
-                    }
+            environment {
+                PATH = "${env.PATH};C:\\Program Files (x86)\\Microsoft SDKs\\Azure\\CLI2\\wbin"
+            }
             steps {
                 // fetch public IP of the VM using Azure CLI
                 script {
                     def publicIp = bat label: '', returnStdout: true, script: """
-                        script: "az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
-                        """
-                    ).trim()
+                        az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
+                    """.trim()
                     env.PUBLIC_IP = publicIp
                 }
             }
