@@ -131,7 +131,8 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
 
   depends_on = [
     azurerm_network_interface.app_interface,
-    tls_private_key.linux_key
+    tls_private_key.linux_key,
+    azurerm_network_security_group.example
   ]
 
 
@@ -149,6 +150,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
     host        = azurerm_public_ip.app_public_ip.ip_address
     user        = "linuxusr"
     private_key = tls_private_key.linux_key.private_key_pem
+    timeout     = "10m"
   }
   }
   
