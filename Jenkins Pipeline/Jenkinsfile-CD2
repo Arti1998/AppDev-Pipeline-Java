@@ -48,6 +48,7 @@ pipeline {
                             remote.allowAnyHosts = true
                             remote.host = ip
                             remote.host = remote.host.trim()
+                            remote.port = 8280
                           
                             sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                             sshPut remote: remote, from: 'JavaMaven.war', into: '/temp'
