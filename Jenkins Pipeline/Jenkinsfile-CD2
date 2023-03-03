@@ -54,16 +54,15 @@ pipeline {
                             ssh.allowAnyHosts = true
                             
                             
-
-                            ssh.sshCommand  "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
-
+                            sshScript remote: ssh, script: 'sudo mkdir -p /temp && sudo chmod -R 777 /temp'                          
+                          
                             sshPut.from('JavaMaven.war').into('/temp')
                             sshPut.from('dockerfile').into('/temp')
-
-                            ssh.sshCommand  'cd /temp && docker build -t javasampletomcat:latest .'
-                            ssh.sshCommand  'cd /temp && docker save javasampletomcat:latest | docker load'
-
-                            ssh.sshCommand  'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'                     
+                            
+                            sshScript remote: ssh, script: 'cd /temp && docker build -t javasampletomcat:latest .'
+                            sshScript remote: ssh, script: 'cd /temp && docker save javasampletomcat:latest | docker load'
+                            sshScript remote: ssh, script: 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest' 
+                                       
                                    
                 }
              }
