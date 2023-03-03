@@ -123,7 +123,17 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
-
+  os_profile {
+    computer_name  = "linuxvm"
+    admin_username = "linuxusr"
+    admin_password = "admin123"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+  tags = {
+    environment = "staging"
+  }
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
