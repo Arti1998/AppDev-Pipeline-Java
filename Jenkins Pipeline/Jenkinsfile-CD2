@@ -52,7 +52,8 @@ pipeline {
                             sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                             sshPut remote: remote, from: 'JavaMaven.war', into: '/temp'
                             sshPut remote: remote, from: 'dockerfile', into: '/temp'  
-                            sshPut remote: remote, from: '.', into: '/temp'  
+                            sshPut remote: remote, from: 'src', into: '/temp'
+                            sshPut remote: remote, from: 'pom.xml', into: '/temp'
                             sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:latest /temp"
                             sshCommand remote: remote, command: "cd /temp && docker save javasampletomcat:latest | docker load"
                             sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"                                 
