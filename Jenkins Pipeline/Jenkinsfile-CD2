@@ -43,8 +43,6 @@ pipeline {
                             az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
                             """.trim()
                             env.PUBLIC_IP = publicIp
-                            
-                           echo "env.PUBLIC_IP"
 
                             // rest of the steps
                             remote = [:]
