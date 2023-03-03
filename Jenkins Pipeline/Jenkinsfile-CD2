@@ -52,16 +52,18 @@ pipeline {
                             ssh.port = 22
                             //ssh.identityFile = azureCreds.getFile()
                             ssh.allowAnyHosts = true
+                            
+                            
 
-                            ssh.command "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
+                            ssh.sshCommand  "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
 
-                            ssh.from('JavaMaven.war').into('/temp')
-                            ssh.from('dockerfile').into('/temp')
+                            sshPut.from('JavaMaven.war').into('/temp')
+                            sshPut.from('dockerfile').into('/temp')
 
-                            ssh.command 'cd /temp && docker build -t javasampletomcat:latest .'
-                            ssh.command 'cd /temp && docker save javasampletomcat:latest | docker load'
+                            ssh.sshCommand  'cd /temp && docker build -t javasampletomcat:latest .'
+                            ssh.sshCommand  'cd /temp && docker save javasampletomcat:latest | docker load'
 
-                            ssh.command 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'                     
+                            ssh.sshCommand  'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'                     
                                    
                 }
              }
