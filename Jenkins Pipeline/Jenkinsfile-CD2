@@ -42,7 +42,7 @@ pipeline {
         }
         stage('Deploy Artifact') {
               steps {
-                  withCredentials([azureServicePrincipal(credentialsId: 'az-sp', tenantIdVariable: 'AZURE_TENANT_ID', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET')]) {
+                  withCredentials([azureServicePrincipal(credentialsId: 'az_sp', tenantIdVariable: 'AZURE_TENANT_ID', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET')]) {
                         script {
                             def azureCreds = azureCredentials('az-sp')
                             def creds = azureCreds.getServicePrincipalCredentials(env.AZURE_CLIENT_ID, env.AZURE_TENANT_ID, env.AZURE_CLIENT_SECRET)
