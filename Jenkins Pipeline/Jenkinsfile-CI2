@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_HUB_USER = "localdocker23"
+        DOCKER_HUB_PASSWORD = "Arati@2023"
+        DOCKER_IMAGE_NAME = 'localdocker23/JavaMaven'
+        DOCKER_IMAGE_TAG = 'latest'
+    }
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry("https://index.docker.io/v1/", "docker-hub-credentials") {
+                        def dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                docker.withRegistry("https://index.docker.io/v1/", "docker-hub-credentials") {
+                    def image = docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                    def pushResult = docker.push(image.id)
+                    if (pushResult) {
+                        echo "Docker image has been successfully pushed to Docker Hub"
+                    } else {
+                        error "Failed to push Docker image to Docker Hub"
+                    }
+                }
+            }
+        }
+    }
+}
