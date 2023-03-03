@@ -25,6 +25,13 @@ pipeline {
             steps {
                 // fetch public IP of the VM using Azure CLI
                 script {
+                
+                powershell label: '', script: """
+                az login --service-principal -u $az_sp_CLIENT_ID -p $az_sp_CLIENT_SECRET -t $az_sp_TENANT_ID
+                az vm list-ip-addresses --resource-group app_grp --name linuxvm > fetchpublicip.json
+                (Get-Content fetchpublicip.json | ConvertFrom-Json).virtualMachine.network.publicIpAddresses.ipAddress > output.txt
+                """
+                
                     bat label: '', script: '''
                     az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv > public_ip.txt
                     '''
