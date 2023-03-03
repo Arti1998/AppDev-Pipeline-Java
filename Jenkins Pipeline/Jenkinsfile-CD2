@@ -50,7 +50,7 @@ pipeline {
                             ssh.host = env.PUBLIC_IP
                             ssh.user = 'adminuser'
                             ssh.port = 22
-                            ssh.identityFile = azureCreds.getFile()
+                            //ssh.identityFile = azureCreds.getFile()
                             ssh.allowAnyHosts = true
 
                             ssh.command "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
