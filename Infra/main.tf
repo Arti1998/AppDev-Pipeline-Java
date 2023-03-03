@@ -110,8 +110,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
   resource_group_name = local.resource_group
   location            = local.location
   size                = "Standard_D2s_v3"
-  admin_username      = "linuxusr"  
-  admin_password      = "admin123"
+
   network_interface_ids = [
     azurerm_network_interface.app_interface.id,
   ]
@@ -123,7 +122,15 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
-  os_profile {
+ 
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
+  }
+
+   os_profile {
     computer_name  = "linuxvm"
     admin_username = "linuxusr"
     admin_password = "admin123"
@@ -134,19 +141,13 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
   tags = {
     environment = "staging"
   }
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
-    version   = "latest"
-  }
-
   depends_on = [
     azurerm_network_interface.app_interface,
     //tls_private_key.linux_key,
     azurerm_network_security_group.example
   ]
-
+  
+  
 
 # Provision the virtual machine using cloud-init
   provisioner "remote-exec" {
