@@ -111,7 +111,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
   location            = local.location
   size                = "Standard_D2s_v3"
   admin_username      = "linuxusr"
-  admin_password      = "admin123"
+  admin_password      = "Arati@2023M"
   disable_password_authentication = false
   network_interface_ids = [
     azurerm_network_interface.app_interface.id,
@@ -152,7 +152,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
     type        = "ssh"
     host        = azurerm_public_ip.app_public_ip.ip_address
     user        = "linuxusr"
-    password    = "admin123"
+    password    = "Arati@2023M"
     //private_key = tls_private_key.linux_key.private_key_pem
     timeout     = "10m"
   }
