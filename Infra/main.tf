@@ -110,7 +110,9 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
   resource_group_name = local.resource_group
   location            = local.location
   size                = "Standard_D2s_v3"
-
+  admin_username      = "linuxusr"    
+  admin_password      = "admin123"
+  disable_password_authentication = false
   network_interface_ids = [
     azurerm_network_interface.app_interface.id,
   ]
@@ -128,18 +130,6 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
     offer     = "UbuntuServer"
     sku       = "18.04-LTS"
     version   = "latest"
-  }
-
-   os_profile {
-    computer_name  = "linuxvm"
-    admin_username = "linuxusr"
-    admin_password = "admin123"
-  }
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-  tags = {
-    environment = "staging"
   }
   depends_on = [
     azurerm_network_interface.app_interface,
