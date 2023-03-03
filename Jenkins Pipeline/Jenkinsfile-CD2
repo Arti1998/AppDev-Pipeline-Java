@@ -44,7 +44,7 @@ pipeline {
               steps {
                   withCredentials([azureServicePrincipal(credentialsId: 'az_sp', tenantIdVariable: 'AZURE_TENANT_ID', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET')]) {
                         script {
-                          def creds = azureServicePrincipal(tenantId: 'env.AZURE_TENANT_ID', clientId: 'env.AZURE_CLIENT_ID', clientSecret: 'env.AZURE_CLIENT_SECRET')
+                          def creds = azureServicePrincipal(tenantId:$azcon_TENANT_ID, clientId:$azcon_CLIENT_ID, clientSecret:$azcon_CLIENT_SECRET)
                           def azure = Azure.authenticate(creds)
                           def vm = azure.virtualMachines().getByResourceGroup('app-grp', 'linuxvm')
                           def publicIpAddress = vm.getPrimaryPublicIPAddress()
