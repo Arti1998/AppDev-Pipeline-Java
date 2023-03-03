@@ -6,6 +6,10 @@ pipeline {
         DOCKER_IMAGE_NAME = 'localdocker23/JavaMaven'
         DOCKER_IMAGE_TAG = 'latest'
     }
+    tools
+    {
+        docker 'docker'
+    }
     stages {
         stage('Build Docker Image') {
             steps {
