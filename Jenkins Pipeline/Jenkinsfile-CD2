@@ -50,7 +50,7 @@ pipeline {
                             remote.user = 'linuxusr'
                             remote.password = 'Arati@2023M'
                             remote.allowAnyHosts = true
-                            remote.host = env.PUBLIC_IP
+                            remote.host = $env.PUBLIC_IP
                           
                             sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                             sshPut remote: remote, from: 'JavaMaven.war', into: '/temp'
