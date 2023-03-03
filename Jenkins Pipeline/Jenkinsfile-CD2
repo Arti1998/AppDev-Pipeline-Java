@@ -43,6 +43,9 @@ pipeline {
                             az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
                             """.trim()
                             env.PUBLIC_IP = publicIp
+                            def ipAddress = publicIp.trim()
+                            
+                            
 
                             // rest of the steps
                             remote = [:]
@@ -50,7 +53,7 @@ pipeline {
                             remote.user = 'linuxusr'
                             remote.password = 'Arati@2023M'
                             remote.allowAnyHosts = true
-                            remote.host = $env.PUBLIC_IP
+                            remote.host = ipAddress
                           
                             sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                             sshPut remote: remote, from: 'JavaMaven.war', into: '/temp'
