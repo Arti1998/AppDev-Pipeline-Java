@@ -1,3 +1,5 @@
-FROM tomcat:9.0.43-jdk11
+FROM maven:3.6.3-jdk-11-slim AS build
 
-COPY JavaMaven.war $CATALINA_HOME/webapps/
+COPY . /app
+WORKDIR /app
+RUN mvn clean install
