@@ -38,21 +38,15 @@ pipeline {
         }
         stage('Deploy Artifact') {
               steps {
-                    script {
-                          def publicIp = bat label: '', returnStdout: true, script: """
-                            az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
-                            """
-                            def ipAddress = publicIp.trim()
-                            
-                            
-
+                    script {                           
+                            ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
                             // rest of the steps
                             remote = [:]
                             remote.name = 'linuxvm'
                             remote.user = 'linuxusr'
                             remote.password = 'Arati@2023M'
                             remote.allowAnyHosts = true
-                            remote.host = ipAddress
+                            remote.host = ip
                             remote.host = remote.host.trim()
                           
                             sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
