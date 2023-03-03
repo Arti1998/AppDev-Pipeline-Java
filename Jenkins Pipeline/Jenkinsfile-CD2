@@ -25,13 +25,9 @@ pipeline {
             }
         }
         stage('Fetch Public IP') {
-            environment {
-                PATH = "${env.PATH};C:\\Program Files (x86)\\Microsoft SDKs\\Azure\\CLI2\\wbin"
-            }
             steps {
                 // fetch public IP of the VM using Azure CLI
-                script {
-                
+                script {                
                 powershell label: '', script: """
                 az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID
                 az vm list-ip-addresses --resource-group app_grp --name linuxvm > fetchpublicip.json
@@ -42,17 +38,16 @@ pipeline {
         }
         stage('Deploy Artifact') {
               steps {
-                  withCredentials([azureServicePrincipal(credentialsId: 'az_sp', tenantIdVariable: 'AZURE_TENANT_ID', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET')]) {
-                        script {
-                          def creds = azureServicePrincipal(tenantId:$azcon_TENANT_ID, clientId:$azcon_CLIENT_ID, clientSecret:$azcon_CLIENT_SECRET)
-                          def azure = Azure.authenticate(creds)
-                          def vm = azure.virtualMachines().getByResourceGroup('app-grp', 'linuxvm')
-                          def publicIpAddress = vm.getPrimaryPublicIPAddress()
-
+                    script {
+                          def publicIp = bat label: '', returnStdout: true, script: """
+                            az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
+                            """.trim()
+                            env.PUBLIC_IP = publicIp
+                    
                             // rest of the steps
                             def ssh = [:]
                             ssh.name = 'linuxvm'
-                            ssh.host = publicIpAddress.ipAddress
+                            ssh.host = env.PUBLIC_IP
                             ssh.user = 'adminuser'
                             ssh.port = 22
                             ssh.identityFile = azureCreds.getFile()
@@ -67,7 +62,7 @@ pipeline {
                             ssh.command 'cd /temp && docker save javasampletomcat:latest | docker load'
 
                             ssh.command 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'                     
-                    }                 
+                                   
                 }
              }
          }       
