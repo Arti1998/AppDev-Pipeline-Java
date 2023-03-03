@@ -36,67 +36,41 @@ pipeline {
                 az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID
                 az vm list-ip-addresses --resource-group app_grp --name linuxvm > fetchpublicip.json
                 (Get-Content fetchpublicip.json | ConvertFrom-Json).virtualMachine.network.publicIpAddresses.ipAddress > output.txt
-                """
-                
-                    bat label: '', script: '''
-                    az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv > public_ip.txt
-                    '''
-                    //def publicIp = bat label: '', returnStdout: true, script: """
-                    //    az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
-                    //""".trim()
-                    //env.PUBLIC_IP = publicIp
+                """              
                 }
             }
         }
         stage('Deploy Artifact') {
-            steps {
-              withCredentials([sshUserPrivateKey(credentialsId: 'my-ssh-credentials', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
-                    sshagent(['my-ssh-credentials']) {
-                        sshCommand remote: [
-                            name: 'linuxvm',
-                            host: '74.234.98.211',
-                            user: "${SSH_USER}",
-                            keyFile: "${SSH_KEY}",
-                            allowAnyHosts : true
-                        ], command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
-                        sshCommand remote: [
-                            name: 'linuxvm',
-                            host: '74.234.98.211',
-                            user: "${SSH_USER}",
-                            keyFile: "${SSH_KEY}",
-                            allowAnyHosts : true
-                        ], from: 'LoginWebApp.war', into: '/temp'
-                         sshCommand remote: [
-                            name: 'linuxvm',
-                            host: '74.234.98.211',
-                            user: "${SSH_USER}",
-                            keyFile: "${SSH_KEY}",
-                            allowAnyHosts : true
-                        ], from: 'dockerfile', into: '/temp'
-                        sshCommand remote: [
-                            name: 'linuxvm',
-                            host: '74.234.98.211',
-                            user: "${SSH_USER}",
-                            keyFile: "${SSH_KEY}",
-                            allowAnyHosts : true
-                        ], command: 'cd /temp && docker build -t javasampletomcat:latest .'
-                        sshCommand remote: [
-                            name: 'linuxvm',
-                            host: '74.234.98.211',
-                            user: "${SSH_USER}",
-                            keyFile: "${SSH_KEY}",
-                            allowAnyHosts : true
-                        ], command: "cd /temp && docker save javasampletomcat:latest | docker load"
-                        sshCommand remote: [
-                            name: 'linuxvm',
-                            host: '74.234.98.211',
-                            user: "${SSH_USER}",
-                            keyFile: "${SSH_KEY}",
-                            allowAnyHosts : true
-                        ], command: 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
-                    }
-                }       
-            }
-        }
+              steps {
+                withCredentials([azureServicePrincipal(credentialsId: 'az_sp', tenantIdVariable: 'AZURE_TENANT_ID', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET')]) {
+                  script {
+                    def azureCreds = azureCredentials(binding.credentialsId)
+                    def creds = azureCreds.getServicePrincipalCredentials(AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET)
+                    def azure = azureCreds.getAzureClient(AZURE_SUBSCRIPTION_ID, AZURE_TENANT_ID, creds)
+
+                    def vm = azure.virtualMachines().getByResourceGroup('app-grp', 'linuxvm')
+                    def publicIpAddress = vm.getPrimaryPublicIPAddress()
+
+                    def ssh = [:]
+                    ssh.name = 'linuxvm'
+                    ssh.host = publicIpAddress.ipAddress
+                    ssh.user = 'adminuser'
+                    ssh.port = 22
+                    ssh.identityFile = azureCreds.getFile()
+                    ssh.allowAnyHosts = true
+
+                    ssh.command "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
+
+                    ssh.from('JavaMaven.war').into('/temp')
+                    ssh.from('dockerfile').into('/temp')
+
+                    ssh.command 'cd /temp && docker build -t javasampletomcat:latest .'
+                    ssh.command 'cd /temp && docker save javasampletomcat:latest | docker load'
+
+                    ssh.command 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
+                  }
+                }
+              }
+            }       
     }
 }
