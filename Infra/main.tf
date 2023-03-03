@@ -9,6 +9,7 @@ terraform {
 }
 
 provider "azurerm" {
+  skip_provider_registration = true
   features {}
 }
 
@@ -74,7 +75,7 @@ resource "azurerm_network_security_group" "example" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "22"
+    destination_port_range     = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
@@ -110,13 +111,14 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
   location            = local.location
   size                = "Standard_D2s_v3"
   admin_username      = "linuxusr"  
+  admin_password      = "admin123"
   network_interface_ids = [
     azurerm_network_interface.app_interface.id,
   ]
-  admin_ssh_key {
-    username   = "linuxusr"
-    public_key = tls_private_key.linux_key.public_key_openssh
-  }
+  //admin_ssh_key {
+  //  username   = "linuxusr"
+  //  public_key = tls_private_key.linux_key.public_key_openssh
+  //}
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
@@ -131,7 +133,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
 
   depends_on = [
     azurerm_network_interface.app_interface,
-    tls_private_key.linux_key,
+    //tls_private_key.linux_key,
     azurerm_network_security_group.example
   ]
 
@@ -149,7 +151,8 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
     type        = "ssh"
     host        = azurerm_public_ip.app_public_ip.ip_address
     user        = "linuxusr"
-    private_key = tls_private_key.linux_key.private_key_pem
+    password    = "admin123"
+    //private_key = tls_private_key.linux_key.private_key_pem
     timeout     = "10m"
   }
   }
