@@ -48,7 +48,7 @@ pipeline {
                             remote.allowAnyHosts = true
                             remote.host = ip
                             remote.host = remote.host.trim()
-                            remote.port = 8280
+                            
                           
                             sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                             sshPut remote: remote, from: 'JavaMaven.war', into: '/temp'
@@ -59,7 +59,7 @@ pipeline {
                             sshCommand remote: remote, command: "cd /temp"
                             sshCommand remote: remote, command: "sudo usermod -aG docker linuxusr"
                             sshCommand remote: remote, command: "docker save javasampletomcat:latest | docker load"
-                            sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"                                 
+                            sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8080:80 javasampletomcat:latest"                                 
                                    
                 }
              }
