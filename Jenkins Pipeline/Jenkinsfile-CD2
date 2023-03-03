@@ -42,9 +42,9 @@ pipeline {
         }
         stage('Deploy Artifact') {
               steps {
-                withCredentials([azureServicePrincipal(credentialsId: 'az_sp', tenantIdVariable: 'AZURE_TENANT_ID', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET')]) {
+                
                   script {
-                    def azureCreds = azureCredentials(azcon)
+                    def azureCreds = azureCredentials($azcon)
                     def creds = azureCreds.getServicePrincipalCredentials($azcon_CLIENT_ID, $azcon_TENANT_ID, $azcon_CLIENT_SECRET)
                     def azure = azureCreds.getAzureClient($azcon__SUBSCRIPTION_ID, $azcon_TENANT_ID, creds)
 
@@ -68,7 +68,7 @@ pipeline {
                     ssh.command 'cd /temp && docker save javasampletomcat:latest | docker load'
 
                     ssh.command 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
-                  }
+                  
                 }
               }
             }       
