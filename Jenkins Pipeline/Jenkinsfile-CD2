@@ -44,9 +44,7 @@ pipeline {
                             """.trim()
                             env.PUBLIC_IP = publicIp
                             
-                            def ipFile = 'public-ip.txt'
-                            sh "az vm show -d -g app-grp -n linuxvm --query publicIps -o tsv > ${ipFile}"
-                            def publicIpAddress = readFile(ipFile).trim()
+                           echo "env.PUBLIC_IP"
 
                             // rest of the steps
                             remote = [:]
@@ -54,7 +52,7 @@ pipeline {
                             remote.user = 'linuxusr'
                             remote.password = 'Arati@2023M'
                             remote.allowAnyHosts = true
-                            remote.host = publicIpAddress
+                            remote.host = env.PUBLIC_IP
                           
                             sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                             sshPut remote: remote, from: 'JavaMaven.war', into: '/temp'
