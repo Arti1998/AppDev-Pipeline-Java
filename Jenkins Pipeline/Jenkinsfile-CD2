@@ -42,35 +42,36 @@ pipeline {
         }
         stage('Deploy Artifact') {
               steps {
-                
-                  script {
-                    def azureCreds = azureCredentials($azcon)
-                    def creds = azureCreds.getServicePrincipalCredentials($azcon_CLIENT_ID, $azcon_TENANT_ID, $azcon_CLIENT_SECRET)
-                    def azure = azureCreds.getAzureClient($azcon__SUBSCRIPTION_ID, $azcon_TENANT_ID, creds)
+                  withCredentials([azureServicePrincipal(credentialsId: 'az-sp', tenantIdVariable: 'AZURE_TENANT_ID', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET')]) {
+                        script {
+                            def azureCreds = azureCredentials('az-sp')
+                            def creds = azureCreds.getServicePrincipalCredentials(env.AZURE_CLIENT_ID, env.AZURE_TENANT_ID, env.AZURE_CLIENT_SECRET)
+                            def azure = azureCreds.getAzureClient(env.AZURE_SUBSCRIPTION_ID, env.AZURE_TENANT_ID, creds)
 
-                    def vm = azure.virtualMachines().getByResourceGroup('app-grp', 'linuxvm')
-                    def publicIpAddress = vm.getPrimaryPublicIPAddress()
+                            def vm = azure.virtualMachines().getByResourceGroup('app-grp', 'linuxvm')
+                            def publicIpAddress = vm.getPrimaryPublicIPAddress()
 
-                    def ssh = [:]
-                    ssh.name = 'linuxvm'
-                    ssh.host = publicIpAddress.ipAddress
-                    ssh.user = 'adminuser'
-                    ssh.port = 22
-                    ssh.identityFile = azureCreds.getFile()
-                    ssh.allowAnyHosts = true
+                            // rest of the steps
+                            def ssh = [:]
+                            ssh.name = 'linuxvm'
+                            ssh.host = publicIpAddress.ipAddress
+                            ssh.user = 'adminuser'
+                            ssh.port = 22
+                            ssh.identityFile = azureCreds.getFile()
+                            ssh.allowAnyHosts = true
 
-                    ssh.command "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
+                            ssh.command "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
 
-                    ssh.from('JavaMaven.war').into('/temp')
-                    ssh.from('dockerfile').into('/temp')
+                            ssh.from('JavaMaven.war').into('/temp')
+                            ssh.from('dockerfile').into('/temp')
 
-                    ssh.command 'cd /temp && docker build -t javasampletomcat:latest .'
-                    ssh.command 'cd /temp && docker save javasampletomcat:latest | docker load'
+                            ssh.command 'cd /temp && docker build -t javasampletomcat:latest .'
+                            ssh.command 'cd /temp && docker save javasampletomcat:latest | docker load'
 
-                    ssh.command 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'
-                  
+                            ssh.command 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest'                     
+                    }                 
                 }
-              }
-            }       
+             }
+         }       
     }
 }
