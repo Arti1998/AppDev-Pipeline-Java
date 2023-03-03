@@ -3,5 +3,6 @@ COPY . /app
 WORKDIR /app
 RUN mvn clean package
 
-FROM tomcat:9.0-jdk11-openjdk-slim
-COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/
+FROM tomcat:8-jre8-alpine
+COPY --from=build /app/*.war /usr/local/tomcat/webapps/
+CMD ["catalina.sh", "run"]
