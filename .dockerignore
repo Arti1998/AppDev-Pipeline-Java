@@ -1,0 +1,8 @@
+infra/
+public-ip.txt
+output.txt
+Jenkinsfile
+fetchpublicip.json
+.gitignore
+Jenkins Pipeline/
+.git/
