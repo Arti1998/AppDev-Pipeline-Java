@@ -43,7 +43,7 @@ pipeline {
                             name: 'linuxvm',
                             host: '74.234.98.211',
                             user: "${SSH_USER}",
-                            identityFile: "${SSH_KEY}",
+                            keyFile: "${SSH_KEY}",
                             allowAnyHosts : true
                         ], command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
                         sshCommand remote: [
