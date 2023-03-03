@@ -43,26 +43,25 @@ pipeline {
                             az vm list-ip-addresses --name linuxvm --resource-group app-grp --query [0].virtualMachine.network.publicIpAddresses[0].ipAddress --output tsv
                             """.trim()
                             env.PUBLIC_IP = publicIp
-                    
+                            
+                            def ipFile = 'public-ip.txt'
+                            sh "az vm show -d -g app-grp -n linuxvm --query publicIps -o tsv > ${ipFile}"
+                            def publicIpAddress = readFile(ipFile).trim()
+
                             // rest of the steps
-                            def ssh = [:]
-                            ssh.name = 'linuxvm'
-                            ssh.host = env.PUBLIC_IP
-                            ssh.user = 'adminuser'
-                            ssh.port = 22
-                            //ssh.identityFile = azureCreds.getFile()
-                            ssh.allowAnyHosts = true
-                            
-                            
-                            sshScript remote: ssh, script: 'sudo mkdir -p /temp && sudo chmod -R 777 /temp'                          
+                            remote = [:]
+                            remote.name = 'linuxvm'
+                            remote.user = 'linuxusr'
+                            remote.password = 'Arati@2023M'
+                            remote.allowAnyHosts = true
+                            remote.host = publicIpAddress
                           
-                            sshPut.from('JavaMaven.war').into('/temp')
-                            sshPut.from('dockerfile').into('/temp')
-                            
-                            sshScript remote: ssh, script: 'cd /temp && docker build -t javasampletomcat:latest .'
-                            sshScript remote: ssh, script: 'cd /temp && docker save javasampletomcat:latest | docker load'
-                            sshScript remote: ssh, script: 'docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest' 
-                                       
+                            sshCommand remote: remote, command: "sudo mkdir -p /temp && sudo chmod -R 777 /temp"
+                            sshPut remote: remote, from: 'JavaMaven.war', into: '/temp'
+                            sshPut remote: remote, from: 'dockerfile', into: '/temp'  
+                            sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:latest /temp"
+                            sshCommand remote: remote, command: "cd /temp && docker save javasampletomcat:latest | docker load"
+                            sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8280:80 javasampletomcat:latest"                                 
                                    
                 }
              }
