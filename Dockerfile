@@ -4,5 +4,5 @@ WORKDIR /app
 RUN mvn clean package
 
 FROM tomcat
-ADD /app/target/*.war /usr/local/tomcat/webapps/
+ADD app/target/*.war /usr/local/tomcat/webapps/
 CMD ["catalina.sh", "run"]
