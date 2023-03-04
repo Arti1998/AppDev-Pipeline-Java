@@ -4,5 +4,5 @@ WORKDIR /app
 RUN mvn clean package
 
 FROM tomcat:8-jre8-alpine
-COPY --from=build /app/*.war /usr/local/tomcat/webapps/
+COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/
 CMD ["catalina.sh", "run"]
