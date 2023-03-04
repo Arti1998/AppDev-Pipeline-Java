@@ -60,7 +60,7 @@ pipeline {
                             sshCommand remote: remote, command: "cd temp"
                             sshCommand remote: remote, command: "sudo usermod -aG docker linuxusr"
                             sshCommand remote: remote, command: "docker save javasampletomcat:latest | docker load"
-                            sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8080:80 javasampletomcat:latest"                                 
+                            sshCommand remote: remote, command: "docker run -d --name HelloWorld -p 8080:8080 javasampletomcat:latest"                                 
                                    
                 }
              }
