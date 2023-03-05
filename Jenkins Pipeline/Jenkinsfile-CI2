@@ -59,7 +59,7 @@ pipeline {
                             sshCommand remote: remote, command: "sudo docker login -u 'localdocker23' -p 'Arati@2023'"
                             sshCommand remote: remote, command: "sudo docker push localdocker23/javasampletomcat:latest"
                             sshCommand remote: remote, command: "sudo docker image prune -a -f"
-                            sshCommand remote: remote, command: "sudo rm -rf temp/*
+                            sshCommand remote: remote, command: "sudo rm -rf temp/*"
                             //sshCommand remote: remote, command: "cd temp"
                             //sshCommand remote: remote, command: "sudo usermod -aG docker linuxusr"
                             //sshCommand remote: remote, command: "docker save javasampletomcat:latest | docker load"
