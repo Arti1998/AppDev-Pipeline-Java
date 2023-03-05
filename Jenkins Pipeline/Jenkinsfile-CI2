@@ -46,11 +46,6 @@ pipeline {
                SonarApp(sonarlogin)                        
            }
         }
-        stage('Pull the file off Nexus') {
-            steps {
-                DownloadFromNexus()                  
-            }
-        }
          stage('Store war to Nexus') {
             steps{
                 StoreToNexus()                
