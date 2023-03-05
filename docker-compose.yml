@@ -1,0 +1,10 @@
+version: '3'
+services:
+  tomcat:
+    image: tomcat:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /path/to/war/file:/usr/local/tomcat/webapps
+  app:
+    image: localdocker23/javasampletomcat:latest
