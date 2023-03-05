@@ -68,7 +68,7 @@ pipeline {
                 }
              }
          }       
-        stage('Build Docker Image') {
+        stage('Build Docker Image2') {
             steps {
                 script {
                     docker.withRegistry("https://index.docker.io/v1/", "docker-hub-credentials") {
