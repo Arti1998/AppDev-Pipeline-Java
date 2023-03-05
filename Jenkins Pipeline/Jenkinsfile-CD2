@@ -41,6 +41,7 @@ pipeline {
                             
                             
                             sshCommand remote: remote, command: "sudo chmod -R 777 temp"  
+                            sshPut remote: remote, from: 'JavaMaven.war', into: 'temp'
                             sshPut remote: remote, from: 'docker-compose.yml', into: 'temp'
                             sshCommand remote: remote, command: "sudo docker pull localdocker23/javasampletomcat"
                             sshCommand remote: remote, command: "cd temp && sudo docker-compose up -d"
