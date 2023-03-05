@@ -7,6 +7,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'localdocker23/JavaMaven'
         DOCKER_IMAGE_TAG = 'latest'
         azcon = credentials('az_sp')
+        sonarlogin = credentials('sonarqube-token')
     }
     tools {
         maven 'maven-home'
