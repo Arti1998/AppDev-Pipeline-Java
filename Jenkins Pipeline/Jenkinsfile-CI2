@@ -61,7 +61,7 @@ pipeline {
                             sshPut remote: remote, from: 'pom.xml', into: 'temp'
                             
                             sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:latest  --build-arg USERNAME=localdocker23 --build-arg PASSWORD=Arati@2023 --build-arg REGISTRY=https://index.docker.io/v1/ temp"
-                            sshCommand remote: remote, command: "sudo docker tag javasampletomcat:latest doc67/javasampletomcat:latest"
+                            sshCommand remote: remote, command: "sudo docker tag javasampletomcat:latest localdocker23/javasampletomcat:latest"
                            // sshCommand remote: remote, command: "sudo docker login -u 'localdocker23' -p 'Arati@2023'"
                             sshCommand remote: remote, command: "sudo docker push localdocker23/javasampletomcat:latest"
                             sshCommand remote: remote, command: "sudo docker image prune -a -f"
