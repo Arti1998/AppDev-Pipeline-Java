@@ -5,6 +5,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - /path/to/war/file:/usr/local/tomcat/webapps
+      - JavaMaven:/usr/local/tomcat/webapps
   app:
     image: localdocker23/javasampletomcat:latest
