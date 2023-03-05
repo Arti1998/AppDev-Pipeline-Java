@@ -2,13 +2,16 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_USER = "localdocker23"
-        DOCKER_HUB_PASSWORD = "Arati@2023"
+        //DOCKER_HUB_USER = "localdocker23"
+        //DOCKER_HUB_PASSWORD = "Arati@2023"
         DOCKER_IMAGE_NAME = 'localdocker23/JavaMaven'
         DOCKER_IMAGE_TAG = 'latest'
         azcon = credentials('az_sp')
     }
-    
+    tools {
+        maven 'maven-home'
+        jdk 'jdk8'
+    }
     stages {
         stage('Provision Infrastructure') {
             steps {
@@ -23,6 +26,36 @@ pipeline {
                 """
             }
         }
+        stage('Build') {
+             steps {                
+                BuildApp()
+             }
+        }
+         stage('Test') {
+            steps {
+                 TestApp()
+            }
+             post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+         stage('Sonar Analysis') {
+           steps {
+               SonarApp(sonarlogin)                        
+           }
+        }
+        stage('Pull the file off Nexus') {
+            steps {
+                DownloadFromNexus()                  
+            }
+        }
+         stage('Store war to Nexus') {
+            steps{
+                StoreToNexus()                
+            }           
+        } 
         stage('Pull the file off Nexus') {
             steps {
                 DownloadFromNexus()                  
