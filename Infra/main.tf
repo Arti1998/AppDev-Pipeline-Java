@@ -166,10 +166,10 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
       "sudo apt-get update -y",
       "sudo apt-get install -y docker.io kubelet kubeadm kubectl kubernetes-cni",
       "sudo kubeadm init --pod-network-cidr=10.244.0.0/16",
-      "mkdir -p $HOME/.kube",
-      "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config",
-      "sudo chown $(id -u):$(id -g) $HOME/.kube/config",
-      "kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml"
+      //"mkdir -p $HOME/.kube",
+      //"sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config",
+      //"sudo chown $(id -u):$(id -g) $HOME/.kube/config",
+      //"kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml"
     ]
 
     connection {
@@ -178,7 +178,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
     user        = "linuxusr"
     password    = "Arati@2023M"
     //private_key = tls_private_key.linux_key.private_key_pem
-    timeout     = "10m"
+    timeout     = "15m"
   }
   }
   
