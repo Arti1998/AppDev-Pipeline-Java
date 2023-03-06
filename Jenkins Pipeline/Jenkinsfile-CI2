@@ -15,6 +15,12 @@ pipeline {
         jdk 'jdk8'
     }
     stages {
+        stage(Indra Destroy)
+        {
+            step{
+                TerraformDestroy()
+            }
+        }
         stage('Provision Infrastructure') {
             steps {
                 Infra()
