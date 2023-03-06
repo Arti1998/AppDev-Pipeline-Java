@@ -17,8 +17,8 @@ pipeline {
     stages {     
         stage('Provision / Destroy Infrastructure') {
             steps {
-                Infra()
-                //TerraformDestroy()
+                //Infra()
+                TerraformDestroy()
             }
         }
         stage('Build') {
@@ -46,11 +46,11 @@ pipeline {
                 StoreToNexus()                
             }           
         } 
-        stage('Pull the file off Nexus') {
-            steps {
-                DownloadFromNexus()                  
-            }
-        }
+        //stage('Pull the file off Nexus') {
+        //    steps {
+        //        DownloadFromNexus()                  
+        //    }
+        //}
          stage('Fetch Public IP') {
             steps {
                 FetchPublicIPOfVM()             
