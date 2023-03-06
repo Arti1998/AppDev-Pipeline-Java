@@ -161,15 +161,15 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
       "sudo curl -L 'https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)' -o /usr/local/bin/docker-compose",
       "sudo chmod +x /usr/local/bin/docker-compose",
       
-      "sudo apt-get update && sudo apt-get install -y apt-transport-https",
-      "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -",
-      "echo 'deb https://apt.kubernetes.io/ kubernetes-xenial main' | sudo tee /etc/apt/sources.list.d/kubernetes.list",
-      "sudo apt-get update",
-      "sudo apt-get install -y kubelet kubeadm kubectl",
+      //"sudo apt-get update && sudo apt-get install -y apt-transport-https",
+      //"curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -",
+      //"echo 'deb https://apt.kubernetes.io/ kubernetes-xenial main' | sudo tee /etc/apt/sources.list.d/kubernetes.list",
+      //"sudo apt-get update",
+      //"sudo apt-get install -y kubelet kubeadm kubectl",
 
-      "mkdir -p $HOME/.kube",
-      "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config",
-      "sudo chown $(id -u):$(id -g) $HOME/.kube/config"
+      //"mkdir -p $HOME/.kube",
+      //"sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config",
+      //"sudo chown $(id -u):$(id -g) $HOME/.kube/config"
 
       
       //"mkdir -p $HOME/.kube",
