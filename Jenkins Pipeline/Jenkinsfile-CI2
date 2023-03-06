@@ -17,8 +17,8 @@ pipeline {
     stages {     
         stage('Provision / Destroy Infrastructure') {
             steps {
-                //Infra()
-                TerraformDestroy()
+                Infra()
+                //TerraformDestroy()
             }
         }
         stage('Build') {
