@@ -14,17 +14,13 @@ pipeline {
         maven 'maven-home'
         jdk 'jdk8'
     }
-    stages {
-        stage('Terraform Destory') {
-             steps {                
-                TerraformDestroy()
-             }
+    stages {     
+        stage('Provision / Destroy Infrastructure') {
+            steps {
+                Infra()
+                //TerraformDestroy()
+            }
         }
-        //stage('Provision Infrastructure') {
-          //  steps {
-                //Infra()
-            //}
-        //}
         stage('Build') {
              steps {                
                 BuildApp()
