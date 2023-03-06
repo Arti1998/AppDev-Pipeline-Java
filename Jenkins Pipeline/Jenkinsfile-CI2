@@ -15,11 +15,10 @@ pipeline {
         jdk 'jdk8'
     }
     stages {
-        stage(Infra Destroy)
-        {
-            steps {
+        stage('Terraform Destory') {
+             steps {                
                 TerraformDestroy()
-            }
+             }
         }
         //stage('Provision Infrastructure') {
           //  steps {
