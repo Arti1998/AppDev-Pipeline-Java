@@ -158,8 +158,8 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
       "sudo systemctl enable docker",
       "sudo systemctl start docker",
       
-      "sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose"
-      "sudo chmod +x /usr/local/bin/docker-compose"
+      "sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose",
+      "sudo chmod +x /usr/local/bin/docker-compose",
   
       "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -",
       "echo 'deb http://apt.kubernetes.io/ kubernetes-xenial main' | sudo tee /etc/apt/sources.list.d/kubernetes.list",
