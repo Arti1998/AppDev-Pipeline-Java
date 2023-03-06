@@ -10,7 +10,7 @@ pipeline {
         stage('Fetch Public IP') {
             steps {
                      FetchPublicIPOfVM()
-                }
+                
             }
         }
         stage('Pull Image-DockerHub') {
