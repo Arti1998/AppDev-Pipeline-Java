@@ -10,7 +10,7 @@ pipeline {
         ACR_RESOURCE_GROUP = 'aks_terraform_rg'
         AKS_NAME = 'terraform-aks'
         K8S_NAMESPACE = 'system'
-        IMAGE_NAME = 'JavaMsystemaven'
+        IMAGE_NAME = 'javamaven'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
        } 
     tools {
