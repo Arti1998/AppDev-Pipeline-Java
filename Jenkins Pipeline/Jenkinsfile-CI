@@ -4,7 +4,8 @@ pipeline {
     agent any
       environment {
        sonarlogin = credentials('sonarqube-token')
-       
+        azcon = credentials('az_sp')
+
          
         ACR_NAME = 'myacr032023'
         ACR_RESOURCE_GROUP = 'aks_terraform_rg'
@@ -18,6 +19,12 @@ pipeline {
         jdk 'jdk8'
     }
     stages {
+        stage('Provision / Destroy Infrastructure') {
+            steps {
+                Infra()
+                //TerraformDestroy()
+            }
+        }
         stage('Build') {
              steps {                
                 BuildApp()
@@ -43,9 +50,40 @@ pipeline {
                 StoreToNexus()                
             }           
         } 
+        stage('Fetch Public IP') {
+            steps {
+                 powershell label: '', script: """
+                az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID
+                az vm list-ip-addresses --resource-group app-grp --name linuxvm > fetchpublicip.json
+                (Get-Content fetchpublicip.json | ConvertFrom-Json).virtualMachine.network.publicIpAddresses.ipAddress > output.txt
+                """             
+            }
+        }           
         stage('Build Docker image') {
           steps {
-            sh 'docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG .'
+
+                ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
+                remote = [:]
+                remote.name = 'linuxvm'
+                remote.user = 'linuxusr'
+                remote.password = 'Arati@2023M'
+                remote.allowAnyHosts = true
+                remote.host = powershell script: "Get-Content output.txt", returnStdout: true
+                remote.host = remote.host.trim()
+                //remote.host = '4.236.129.185'
+                sshCommand remote: remote, command: "sudo mkdir -p temp && sudo chmod -R 777 temp"
+                sshPut remote: remote, from: 'JavaMaven.war', into: 'temp'
+                sshPut remote: remote, from: 'dockerfile', into: 'temp'  
+                sshPut remote: remote, from: 'src', into: 'temp'
+                sshPut remote: remote, from: 'target', into: 'temp'
+                sshPut remote: remote, from: 'pom.xml', into: 'temp'
+                sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
+                sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
+                sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p 'ifZgvPLjYXp80a0HjG7QljZQRUqLS9p4z+OYixnGem+ACRDqk7nn'"
+                sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
+                sshCommand remote: remote, command: "sudo rm -rf temp/*"
+
+            //sh 'docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG .'
           }
         }
     }
