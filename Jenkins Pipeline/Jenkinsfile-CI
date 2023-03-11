@@ -52,16 +52,18 @@ pipeline {
         } 
         stage('Fetch Public IP') {
             steps {
+                script{
                  powershell label: '', script: """
                 az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID
                 az vm list-ip-addresses --resource-group app-grp --name linuxvm > fetchpublicip.json
                 (Get-Content fetchpublicip.json | ConvertFrom-Json).virtualMachine.network.publicIpAddresses.ipAddress > output.txt
-                """             
+                """   
+                }
             }
         }           
         stage('Build Docker image') {
           steps {
-
+            script{
                 ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
                 remote = [:]
                 remote.name = 'linuxvm'
@@ -84,6 +86,7 @@ pipeline {
                 sshCommand remote: remote, command: "sudo rm -rf temp/*"
 
             //sh 'docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG .'
+            }
           }
         }
     }
