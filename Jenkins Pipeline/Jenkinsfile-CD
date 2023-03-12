@@ -39,7 +39,7 @@ pipeline {
                     az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID
                     az account set --subscription $azcon_SUBSCRIPTION_ID
                     az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks
-                    kubectl create deployment aks-deployment-name --image=javasampletomcat:10 -n default
+                    //kubectl create deployment aks-deployment-name --image=javasampletomcat:10 -n default
                     kubectl apply -f deployment.yaml -n ${AKS_NAMESPACE}
                     """
 
