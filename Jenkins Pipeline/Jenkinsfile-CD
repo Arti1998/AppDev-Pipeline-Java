@@ -12,6 +12,12 @@ pipeline {
                   DownloadFromNexus()                    
             }
         }
+         stage('Fetch Public IP') {
+            steps {
+                     FetchPublicIPOfVM()
+                
+            }
+        }
         stage ('Deploy on this Server') {
             steps{
                 DeployToTomcat()
