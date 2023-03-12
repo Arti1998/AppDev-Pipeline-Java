@@ -20,6 +20,6 @@ spec:
     spec:
       containers:
       - name: myacr032023
-        image: $ACR_LOGIN_SERVER/javamavenapp:$BUILD_NUMBER
+        image: myacr032023.azurecr.io/javamavenapp:latest
         ports:
         - containerPort: 8080
