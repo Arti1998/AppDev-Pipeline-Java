@@ -43,7 +43,7 @@ pipeline {
                     """
 
                     //Get deployment manifest file
-                    def deploymentFile = readFile 'deployment.yml'
+                    def deploymentFile = readFile 'deployment'
 
                     //Replace the image tag with the ACR image tag
                     deploymentFile = deploymentFile.replaceAll('\\$ACR_LOGIN_SERVER', acrLoginServer)
