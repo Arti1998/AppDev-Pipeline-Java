@@ -1,22 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: your-app
+  name: javamaven
 spec:
   selector:
     matchLabels:
-      app: your-app
+      app: javamaven
   replicas: 3
   template:
     metadata:
       labels:
-        app: your-app
-    //spec:
-    //  containers:
-    //    - name: your-app
-    //      image: your-docker-registry/your-app:latest
-    //      ports:
-    //        - containerPort: 8080
+        app: javamaven
     spec:
       containers:
       - name: myacr032023
