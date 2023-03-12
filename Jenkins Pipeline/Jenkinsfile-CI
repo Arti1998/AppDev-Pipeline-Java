@@ -74,7 +74,7 @@ pipeline {
                 remote.host = remote.host.trim()
                 //remote.host = '4.236.129.185'
                 sshCommand remote: remote, command: "sudo mkdir -p temp && sudo chmod -R 777 temp"
-                sshPut remote: remote, from: 'JavaMaven.war', into: 'temp'
+                //sshPut remote: remote, from: 'JavaMaven.war', into: 'temp'
                 sshPut remote: remote, from: 'dockerfile', into: 'temp'  
                 sshPut remote: remote, from: 'src', into: 'temp'
                 sshPut remote: remote, from: 'target', into: 'temp'
