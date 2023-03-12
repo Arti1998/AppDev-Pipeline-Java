@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: myacr032023
-        image: myacr032023.azurecr.io/javasampletomcat:27
+        image: myacr032023.azurecr.io/javasampletomcat:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         
