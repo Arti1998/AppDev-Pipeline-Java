@@ -51,7 +51,7 @@ pipeline {
                     //sh "kubectl config use-context $AKS_CLUSTER_NAME"
                     
                     sh """az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks"""
-                    sh "kubectl create deployment ${AKS_DEPLOYMENT_NAME} --image=${IMAGE_NAME}:${IMAGE_TAG} -n ${AKS_NAMESPACE}"
+                    sh "kubectl create deployment aks-deployment-name --image=javasampletomcat:10 -n default"
 
                     // Get deployment manifest file
                     //def deploymentFile = readFile 'deployment.yml'
