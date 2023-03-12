@@ -8,6 +8,7 @@ pipeline {
         IMAGE_TAG = '10'
         AKS_NAMESPACE = 'default'
         AKS_DEPLOYMENT_NAME = 'aks-deployment-name'
+        acrLoginServer = 'myacr032023.azurecr.io'
     }
     tools {
         maven 'maven-home'
@@ -34,34 +35,25 @@ pipeline {
          stage('Deploy to AKS') {
             steps {
                 script {
-                    // Authenticate Azure CLI
-                    sh "az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID"
-                    sh "az account set --subscription $azcon_SUBSCRIPTION_ID"
+                bat label: '', script:"""
+                    az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID
+                    az account set --subscription $azcon_SUBSCRIPTION_ID
+                    az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks
+                    kubectl create deployment aks-deployment-name --image=javasampletomcat:10 -n default
+                    """
 
-                    // Authenticate to ACR
-                    def acrLoginServer = "myacr032023.azurecr.io"
-                    sh "az acr login --name $acrLoginServer"
-                    def acrUsername = sh(returnStdout: true, script: "az acr credential show --name $acrLoginServer --query username --output tsv").trim()
-                    def acrPassword = sh(returnStdout: true, script: "az acr credential show --name $acrLoginServer --query passwords[0].value --output tsv").trim()
+                    //Get deployment manifest file
+                    def deploymentFile = readFile 'deployment.yml'
 
-                    // Authenticate to AKS
-                    //sh "kubectl config set-cluster terraform-aks --server=terraform-aks-9id062df.hcp.canadacentral.azmk8s.io --certificate-authority=$AKS_CERTIFICATE_AUTHORITY_DATA"
-                    //sh "kubectl config set-credentials $AKS_CLUSTER_NAME --token=$AKS_TOKEN"
-                    //sh "kubectl config set-context $AKS_CLUSTER_NAME --cluster=$AKS_CLUSTER_NAME --user=$AKS_CLUSTER_NAME"
-                    //sh "kubectl config use-context $AKS_CLUSTER_NAME"
-                    
-                    sh "az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks"
-                    sh "kubectl create deployment aks-deployment-name --image=javasampletomcat:10 -n default"
-
-                    // Get deployment manifest file
-                    //def deploymentFile = readFile 'deployment.yml'
-
-                    // Replace the image tag with the ACR image tag
-                   // deploymentFile = deploymentFile.replaceAll('\\$ACR_LOGIN_SERVER', acrLoginServer)
-                    //deploymentFile = deploymentFile.replaceAll('\\$BUILD_NUMBER', env.BUILD_NUMBER)
+                    //Replace the image tag with the ACR image tag
+                    deploymentFile = deploymentFile.replaceAll('\\$ACR_LOGIN_SERVER', acrLoginServer)
+                    deploymentFile = deploymentFile.replaceAll('\\$BUILD_NUMBER', env.BUILD_NUMBER)
 
                     // Apply Kubernetes deployment manifest file to AKS
-                    //sh "echo '$deploymentFile' | kubectl apply -f -"
+                    bat label: '', script: """
+                    echo ${deploymentFile} | kubectl apply -f - -n ${AKS_NAMESPACE}
+                    """
+
                 }
             }
         }
