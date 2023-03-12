@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: myacr032023
-        image: myacr032023.azurecr.io/javamavenapp:latest
+        image: myacr032023.azurecr.io/javasampletomcat:27
         ports:
         - containerPort: 8080
         
