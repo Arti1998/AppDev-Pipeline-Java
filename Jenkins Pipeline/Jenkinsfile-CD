@@ -35,8 +35,8 @@ pipeline {
             steps {
                 script {
                     // Authenticate Azure CLI
-                    sh "az login --service-principal --username $azcon_CLIENT_ID --password $azcon_CLIENT_SECRET --tenant $azcon_TENANT_ID"
-                    sh "az account set --subscription $azcon_SUBSCRIPTION_ID"
+                    sh """az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID"""
+                    sh ""az account set --subscription $azcon_SUBSCRIPTION_ID"""
 
                     // Authenticate to ACR
                     def acrLoginServer = "myacr032023.azurecr.io"
@@ -50,8 +50,8 @@ pipeline {
                     //sh "kubectl config set-context $AKS_CLUSTER_NAME --cluster=$AKS_CLUSTER_NAME --user=$AKS_CLUSTER_NAME"
                     //sh "kubectl config use-context $AKS_CLUSTER_NAME"
                     
-                    sh "az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks"
-                    sh "kubectl create deployment ${AKS_DEPLOYMENT_NAME} --image=${IMAGE_NAME}:${IMAGE_TAG} -n ${AKS_NAMESPACE}"
+                    sh """az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks"""
+                    sh """kubectl create deployment ${AKS_DEPLOYMENT_NAME} --image=${IMAGE_NAME}:${IMAGE_TAG} -n ${AKS_NAMESPACE}"""
 
                     // Get deployment manifest file
                     //def deploymentFile = readFile 'deployment.yml'
