@@ -8,7 +8,7 @@ pipeline {
         IMAGE_TAG = '10'
         AKS_NAMESPACE = 'default'
         AKS_DEPLOYMENT_NAME = 'aks-deployment-name'
-        acrLoginServer = 'myacr03102023.azurecr.io'
+        acrLoginServer = 'myacr032023.azurecr.io'
     }
     tools {
         maven 'maven-home'
@@ -40,7 +40,7 @@ pipeline {
                     az account set --subscription $azcon_SUBSCRIPTION_ID
                     """
                 bat """
-                    az aks get-credentials --resource-group my-resource-group --name my-aks-cluster                   
+                    az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks                   
                 """
                  bat """
                     kubectl apply -f deployment.yaml -n ${AKS_NAMESPACE}
@@ -48,22 +48,7 @@ pipeline {
                  bat """
                     kubectl logs deployment/javamaven -n ${AKS_NAMESPACE}
                 """
-                    //az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks                   
-                    //kubectl apply -f deployment.yaml -n ${AKS_NAMESPACE}
-                    //kubectl logs deployment/javamaven -n ${AKS_NAMESPACE}
-                    //"""
-                    //kubectl create deployment aks-deployment-name --image=javasampletomcat:10 -n default
-                    //Get deployment manifest file
-                    //def deploymentFile = readFile 'deployment'
 
-                    //Replace the image tag with the ACR image tag
-                    //deploymentFile = deploymentFile.replaceAll('\\$ACR_LOGIN_SERVER', acrLoginServer)
-                    //deploymentFile = deploymentFile.replaceAll('\\$BUILD_NUMBER', env.BUILD_NUMBER)
-
-                    // Apply Kubernetes deployment manifest file to AKS
-                    //bat label: '', script: """
-                    //echo ${deploymentFile} | kubectl apply -f - -n ${AKS_NAMESPACE}
-                    //"""
 
                 }
             }
