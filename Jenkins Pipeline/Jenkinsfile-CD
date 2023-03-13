@@ -8,7 +8,7 @@ pipeline {
         IMAGE_TAG = '10'
         AKS_NAMESPACE = 'default'
         AKS_DEPLOYMENT_NAME = 'aks-deployment-name'
-        acrLoginServer = 'myacr032023.azurecr.io'
+        acrLoginServer = 'myacr03102023.azurecr.io'
     }
     tools {
         maven 'maven-home'
