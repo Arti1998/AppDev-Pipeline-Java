@@ -3,19 +3,18 @@ locals {
   location="North Europe"
 }
 
-
-resource "tls_private_key" "linux_key" {
-  algorithm = "RSA"
-  rsa_bits = 4096
-}
+#resource "tls_private_key" "linux_key" {
+#  algorithm = "RSA"
+#  rsa_bits = 4096
+#}
 
 # We want to save the private key to our machine
 # We can then use this key to connect to our Linux VM
 
-resource "local_file" "linuxkey" {
-  filename="linuxkey.pem"  
-  content=tls_private_key.linux_key.private_key_pem 
-}
+#resource "local_file" "linuxkey" {
+#  filename="linuxkey.pem"  
+#  content=tls_private_key.linux_key.private_key_pem 
+#}
 
 resource "azurerm_resource_group" "app_grp"{
   name=local.resource_group
