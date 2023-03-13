@@ -13,8 +13,8 @@ spec:
         app: javamaven
     spec:
       containers:
-      - name: myacr03102023
-        image: myacr03102023.azurecr.io/javasampletomcat:latest
+      - name: myacr032023
+        image: myacr032023.azurecr.io/javasampletomcat:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
