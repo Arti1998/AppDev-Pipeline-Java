@@ -11,8 +11,8 @@ pipeline {
         ACR_RESOURCE_GROUP = 'aks_terraform_rg'
         AKS_NAME = 'terraform-aks'
         K8S_NAMESPACE = 'default'
-        IMAGE_NAME = 'javamaven'
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        //IMAGE_NAME = 'javamaven'
+        //IMAGE_TAG = "${env.BUILD_NUMBER}"
        } 
     tools {
         maven 'maven-home'
