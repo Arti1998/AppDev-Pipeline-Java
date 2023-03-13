@@ -81,7 +81,7 @@ pipeline {
                 sshPut remote: remote, from: 'pom.xml', into: 'temp'
                 sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
                 sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
-                sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p 'Bssy2wjIB/7nf8SrxoyEmHZdzIZhAXazYX6uy5CyYR+ACRDT8PIK'"
+                sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p 'Mdor789J0+3CtgOEd/mJ9zwhPkWOt278jkh059NHzy+ACRClEocQ'"
                 sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
                 sshCommand remote: remote, command: "sudo rm -rf temp/*"
 
