@@ -18,10 +18,9 @@ module "dockervm" {
   
 }
 
-//module "acr" {
-//  source    = "./modules/acr"
-  
-//}
+module "acr" {
+  source    = "./modules/acr"
+ }
 
 
 
