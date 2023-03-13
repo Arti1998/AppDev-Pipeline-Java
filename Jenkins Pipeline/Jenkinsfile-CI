@@ -7,9 +7,9 @@ pipeline {
         azcon = credentials('az_sp')
 
          
-        ACR_NAME = 'myacr03102023'
-        ACR_RESOURCE_GROUP = 'my-resource-group'
-        AKS_NAME = 'my-aks-cluster'
+        ACR_NAME = 'myacr032023'
+        ACR_RESOURCE_GROUP = 'aks_terraform_rg'
+        AKS_NAME = 'terraform-aks'
         K8S_NAMESPACE = 'default'
         IMAGE_NAME = 'javamaven'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
@@ -80,9 +80,9 @@ pipeline {
                 sshPut remote: remote, from: 'target', into: 'temp'
                 sshPut remote: remote, from: 'pom.xml', into: 'temp'
                 sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
-                sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr03102023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
-                sshCommand remote: remote, command: "sudo docker login myacr03102023.azurecr.io -u 'myacr03102023' -p 'WBwpHvMMbBNSyG+ZNzqcFVVnKlMl83AkH8gouG31tz+ACRD20hmD'"
-                sshCommand remote: remote, command: "sudo docker push myacr03102023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
+                sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
+                sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p 'WBwpHvMMbBNSyG+ZNzqcFVVnKlMl83AkH8gouG31tz+ACRD20hmD'"
+                sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
                 sshCommand remote: remote, command: "sudo rm -rf temp/*"
 
             //sh 'docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG .'
