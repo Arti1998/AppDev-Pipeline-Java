@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-  location = var.location
+  name     = "aks_terraform_rg"
+  location = "canadacentral"
 }
 
 resource "azurerm_virtual_network" "my_vnet" {
@@ -22,9 +22,9 @@ resource "azurerm_subnet" "aks_subnet" {
 
 
 resource "azurerm_container_registry" "acr" {
-  name                = var.acr_name
+  name                = "myacr032023"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   sku                 = "Standard"
   admin_enabled       = false
 
@@ -36,15 +36,15 @@ resource "azurerm_container_registry" "acr" {
 
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = var.cluster_name
-  kubernetes_version  = var.kubernetes_version
-  location            = var.location
+  name                = "terraform-aks"
+  kubernetes_version  = "1.24.9"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix          = var.cluster_name
+  dns_prefix          = "terraform-aks"
 
   default_node_pool {
     name                = "system"
-    node_count          = var.system_node_count
+    node_count          = 1
     vm_size             = "Standard_DS2_v2"
     type                = "VirtualMachineScaleSets"
     vnet_subnet_id      = azurerm_subnet.aks_subnet.id
