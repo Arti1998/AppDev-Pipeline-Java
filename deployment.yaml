@@ -12,9 +12,6 @@ spec:
       labels:
         app: javamaven
     spec:
-      securityContext:
-            runAsGroup: 3000
-            runAsUser: 3000
       containers:
       - name: myacr032023
         image: myacr032023.azurecr.io/javasampletomcat:70
