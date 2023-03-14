@@ -71,7 +71,7 @@ pipeline {
                   """
 
                   // Read the password from the file and set it as an environment variable
-                  env.DOCKER_PASSWORD = powershell(label: '', script: 'Get-Content -Path password.txt | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString', returnStdout: true).trim()
+                  env.DOCKER_PASSWORD = powershell(label: '', script: 'Get-Content password.txt', returnStdout: true).trim()
 
                 
                 
