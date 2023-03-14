@@ -25,11 +25,11 @@ pipeline {
                 //TerraformDestroy()
             }
         }
-        //stage('Build') {
-        //     steps {                
-        //        BuildApp()
-        //     }
-        //}
+        stage('Build') {
+             steps {                
+                BuildApp()
+             }
+        }
          stage('Test') {
             steps {
                  TestApp()
