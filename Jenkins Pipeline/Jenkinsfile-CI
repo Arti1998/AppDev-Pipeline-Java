@@ -69,7 +69,7 @@ pipeline {
                 powershell label: '', script: """
                 az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv | Out-File -FilePath "password.txt"
                 """  
-                env.DOCKER_PASSWORD = powershell label:'', script: 'Get-Content -Path "password.txt" | ConvertTo-SecureString -AsPlainText -Force'
+                env.DOCKER_PASSWORD = powershell label:'', script: 'Get-Content -Path "password.txt" | ConvertTo-SecureString -AsPlainText -Force', returnStdout: true
             
                 ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
                 remote = [:]
