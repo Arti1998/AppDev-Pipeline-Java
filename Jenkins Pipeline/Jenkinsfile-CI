@@ -105,5 +105,15 @@ pipeline {
             echo  "${env.DOCKER_PASSWORD}"
           }
         }
+        stage('Update deployment.yaml') {
+          steps {
+            script {
+              sh """
+                sed -i 's|{{CONTAINER_IMAGE}}|${env.IMAGE_NAME}|' deployment.yaml
+                sed -i 's|{{CONTAINER_TAG}}|${env.IMAGE_TAG}|' deployment.yaml
+              """
+            }
+          }
+        }
     }
 }
