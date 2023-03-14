@@ -40,7 +40,8 @@ pipeline {
                     az account set --subscription $azcon_SUBSCRIPTION_ID
                     """
                 bat """
-                    az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks                   
+                az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks --overwrite-existing
+                // az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks                   
                 """
                  bat """
                     kubectl apply -f deployment.yaml -n ${AKS_NAMESPACE}
