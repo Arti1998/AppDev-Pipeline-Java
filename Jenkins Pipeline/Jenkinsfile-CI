@@ -8,6 +8,7 @@ pipeline {
 
          
         ACR_NAME = 'myacr032023'
+        ACR_REG = 'myacr032023.azurecr.io'
         ACR_RESOURCE_GROUP = 'aks_terraform_rg'
         AKS_NAME = 'terraform-aks'
         K8S_NAMESPACE = 'default'
@@ -64,6 +65,14 @@ pipeline {
         stage('Build ACR image') {
           steps {
             script{
+            
+                  // Retrieve the ACR admin password and store it in a variable
+                  def docker_password = sh(script: "az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv", returnStdout: true).trim()
+
+                  // Set the DOCKER_PASSWORD environment variable to the ACR admin password
+                  env.DOCKER_PASSWORD = docker_password
+            
+            
                 ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
                 remote = [:]
                 remote.name = 'linuxvm'
@@ -79,9 +88,9 @@ pipeline {
                 sshPut remote: remote, from: 'target', into: 'temp'
                 sshPut remote: remote, from: 'pom.xml', into: 'temp'
                 sshCommand remote: remote, command: "sudo docker build -t $IMAGE_NAME:$IMAGE_TAG temp"
-                sshCommand remote: remote, command: "sudo docker tag $IMAGE_NAME:$IMAGE_TAG myacr032023.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
-                sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p 'Qh3Op8y94h7oGl1mEVe6a4KlCpSJkJZFF/eX/CxW/H+ACRAS52g3'"
-                sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
+                sshCommand remote: remote, command: "sudo docker tag $IMAGE_NAME:$IMAGE_TAG $ACR_REG/$IMAGE_NAME:$IMAGE_TAG"
+                sshCommand remote: remote, command: "sudo docker login $ACR_REG -u $ACR_NAME -p $DOCKER_PASSWORD"
+                sshCommand remote: remote, command: "sudo docker push $ACR_REG/$IMAGE_NAME:$IMAGE_TAG"
                 
                 //sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
                 //sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
