@@ -25,11 +25,11 @@ pipeline {
                 //TerraformDestroy()
             }
         }
-        stage('Build') {
-             steps {                
-                BuildApp()
-             }
-        }
+        //stage('Build') {
+        //     steps {                
+        //        BuildApp()
+        //     }
+        //}
          stage('Test') {
             steps {
                  TestApp()
@@ -40,16 +40,16 @@ pipeline {
                 }
             }
         }
-        stage('Sonar Analysis') {
-           steps {
-               SonarApp(sonarlogin)                        
-           }
-        }
-         stage('Store war to Nexus') {
-            steps{
-                StoreToNexus()                
-            }           
-        } 
+        //stage('Sonar Analysis') {
+        //   steps {
+        //       SonarApp(sonarlogin)                        
+        //   }
+        //}
+        //stage('Store war to Nexus') {
+        //    steps{
+        //        StoreToNexus()                
+        //    }           
+        //} 
         stage('Fetch Public IP') {
             steps {
                 script{
@@ -61,7 +61,7 @@ pipeline {
                 }
             }
         }           
-        stage('Build Docker image') {
+        stage('Build ACR image') {
           steps {
             script{
                 ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
