@@ -68,7 +68,7 @@ pipeline {
                 powershell label: '', script: """
                 az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv | Out-File -FilePath "password.txt"
                 """  
-                $DOCKER_PASSWORD = powershell label:'', script: 'Get-Content -Path "password.txt" | ConvertTo-SecureString -AsPlainText -Force'
+                def DOCKER_PASSWORD = powershell label:'', script: 'Get-Content -Path "password.txt" | ConvertTo-SecureString -AsPlainText -Force'
             
                 ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
                 remote = [:]
@@ -86,12 +86,12 @@ pipeline {
                 sshPut remote: remote, from: 'pom.xml', into: 'temp'
                 sshCommand remote: remote, command: "sudo docker build -t $IMAGE_NAME:$IMAGE_TAG temp"
                 sshCommand remote: remote, command: "sudo docker tag $IMAGE_NAME:$IMAGE_TAG $ACR_REG/$IMAGE_NAME:$IMAGE_TAG"
-                sshCommand remote: remote, command: "sudo docker login $ACR_REG -u $ACR_NAME -p $DOCKER_PASSWORD"
+                sshCommand remote: remote, command: "sudo docker login $ACR_REG -u $ACR_NAME -p ${DOCKER_PASSWORD}"
                 sshCommand remote: remote, command: "sudo docker push $ACR_REG/$IMAGE_NAME:$IMAGE_TAG"
                 
                 //sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
                 //sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
-                //sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p $env.DOCKER_PASSWORD"
+                //sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p ${DOCKER_PASSWORD}"
                 //sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
                 //sshCommand remote: remote, command: "sudo rm -rf temp/*"
 
