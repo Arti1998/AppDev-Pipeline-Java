@@ -65,10 +65,10 @@ pipeline {
         stage('Build ACR image') {
           steps {
             script{
-                powershell label: '', script: '''
+                powershell label: '', script: """
                 az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv | Out-File -FilePath "password.txt"
-                '''  
-                $DOCKER_PASSWORD = Get-Content -Path "password.txt" | ConvertTo-SecureString -AsPlainText -Force
+                """  
+                $DOCKER_PASSWORD = powershell label:'', script: 'Get-Content -Path "password.txt" | ConvertTo-SecureString -AsPlainText -Force'
             
                 ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
                 remote = [:]
