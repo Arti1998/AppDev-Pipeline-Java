@@ -65,13 +65,10 @@ pipeline {
         stage('Build ACR image') {
           steps {
             script{
-            
-                  // Retrieve the ACR admin password and store it in a variable
-                  def docker_password = sh(script: "az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv", returnStdout: true).trim()
-
-                  // Set the DOCKER_PASSWORD environment variable to the ACR admin password
-                  env.DOCKER_PASSWORD = docker_password
-            
+                powershell label: '', script: '''
+                az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv | Out-File -FilePath "password.txt"
+                '''  
+                $DOCKER_PASSWORD = Get-Content -Path "password.txt" | ConvertTo-SecureString -AsPlainText -Force
             
                 ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
                 remote = [:]
@@ -94,7 +91,7 @@ pipeline {
                 
                 //sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
                 //sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
-                //sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p 'ta4Z86mNlcAFmai1CvWb3SQyEFxeK3IFi6iZf7Mcj2+ACRBzPhC6'"
+                //sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p $env.DOCKER_PASSWORD"
                 //sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
                 //sshCommand remote: remote, command: "sudo rm -rf temp/*"
 
