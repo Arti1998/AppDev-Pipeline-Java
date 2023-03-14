@@ -80,7 +80,7 @@ pipeline {
                 sshPut remote: remote, from: 'pom.xml', into: 'temp'
                 sshCommand remote: remote, command: "sudo docker build -t $IMAGE_NAME:$IMAGE_TAG temp"
                 sshCommand remote: remote, command: "sudo docker tag $IMAGE_NAME:$IMAGE_TAG myacr032023.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
-                sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p 'ta4Z86mNlcAFmai1CvWb3SQyEFxeK3IFi6iZf7Mcj2+ACRBzPhC6'"
+                sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p 'Qh3Op8y94h7oGl1mEVe6a4KlCpSJkJZFF/eX/CxW/H+ACRAS52g3'"
                 sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
                 
                 //sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
