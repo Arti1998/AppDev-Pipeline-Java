@@ -17,8 +17,8 @@ spec:
             runAsUser: 3000
       containers:
       - name: myacr032023
-        image: myacr032023.azurecr.io/javasampletomcat:latest
-        imagePullPolicy: IfNotPresent
+        image: myacr032023.azurecr.io/javasampletomcat:70
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         
