@@ -66,11 +66,15 @@ pipeline {
         stage('Build ACR image') {
           steps {
             script{
-                powershell label: '', script: """
-                az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv | Out-File -FilePath "password.txt"
-                """  
-                env.DOCKER_PASSWORD = powershell label:'', script: 'Get-Content -Path "password.txt" | ConvertTo-SecureString -AsPlainText -Force', returnStdout: true
-            
+                  powershell label: '', script: """
+                    az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv | Out-File -FilePath password.txt
+                  """
+
+                  // Read the password from the file and set it as an environment variable
+                  env.DOCKER_PASSWORD = powershell(label: '', script: 'Get-Content -Path password.txt | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString', returnStdout: true).trim()
+
+                
+                
                 ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
                 remote = [:]
                 remote.name = 'linuxvm'
@@ -92,12 +96,13 @@ pipeline {
                 
                 //sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
                 //sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
-                //sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p $DOCKER_PASSWORD"
+                //sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p ${env.DOCKER_PASSWORD}"
                 //sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
                 //sshCommand remote: remote, command: "sudo rm -rf temp/*"
 
             //sh 'docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG .'
             }
+            echo  "${env.DOCKER_PASSWORD}"
           }
         }
     }
