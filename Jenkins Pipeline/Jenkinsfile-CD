@@ -23,34 +23,13 @@ pipeline {
         }
          stage('Fetch Public IP') {
             steps {
-                     FetchPublicIPOfVM()
-                
+                   FetchPublicIPOfVM()               
             }
         }
-        //stage ('Deploy on this Server') {
-        //    steps{
-        //        DeployToTomcat()
-        //    }            
-        //}
          stage('Deploy to AKS') {
             steps {
                 script {
-                bat label: '', script:"""
-                    az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID
-                    az account set --subscription $azcon_SUBSCRIPTION_ID
-                    """
-                bat """
-                az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks --overwrite-existing
-                // az aks get-credentials --resource-group aks_terraform_rg --name terraform-aks                   
-                """
-                 bat """
-                    kubectl apply -f deployment.yaml -n ${AKS_NAMESPACE}
-                """
-                 bat """
-                    kubectl logs deployment/javamaven -n ${AKS_NAMESPACE}
-                """
-
-
+                    DeployACRImageToAKS()             
                 }
             }
         }
