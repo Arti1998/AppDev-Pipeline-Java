@@ -55,65 +55,16 @@ pipeline {
         stage('Fetch Public IP') {
             steps {
                 script{
-                 powershell label: '', script: """
-                az login --service-principal -u $azcon_CLIENT_ID -p $azcon_CLIENT_SECRET -t $azcon_TENANT_ID
-                az vm list-ip-addresses --resource-group app-grp --name linuxvm > fetchpublicip.json
-                (Get-Content fetchpublicip.json | ConvertFrom-Json).virtualMachine.network.publicIpAddresses.ipAddress > output.txt
-                """   
+                    FetchPublicIPOfVM()
                 }
             }
         }           
         stage('Build ACR image') {
           steps {
             script{
-                  powershell label: '', script: """
-                    az acr credential show --name $ACR_NAME --query passwords[0].value --output tsv | Out-File -FilePath password.txt
-                  """
-
-                  // Read the password from the file and set it as an environment variable
-                  env.DOCKER_PASSWORD = powershell(label: '', script: 'Get-Content password.txt', returnStdout: true).trim()
-
-                
-                
-                ip = powershell label:'', script: 'Get-Content output.txt', returnStdout: true
-                remote = [:]
-                remote.name = 'linuxvm'
-                remote.user = 'linuxusr'
-                remote.password = 'Arati@2023M'
-                remote.allowAnyHosts = true
-                remote.host = powershell script: "Get-Content output.txt", returnStdout: true
-                remote.host = remote.host.trim()
-                sshCommand remote: remote, command: "sudo mkdir -p temp && sudo chmod -R 777 temp"
-                //sshPut remote: remote, from: 'JavaMaven.war', into: 'temp'
-                sshPut remote: remote, from: 'dockerfile', into: 'temp'  
-                sshPut remote: remote, from: 'src', into: 'temp'
-                sshPut remote: remote, from: 'target', into: 'temp'
-                sshPut remote: remote, from: 'pom.xml', into: 'temp'
-                sshCommand remote: remote, command: "sudo docker build -t $IMAGE_NAME:$IMAGE_TAG temp"
-                sshCommand remote: remote, command: "sudo docker tag $IMAGE_NAME:$IMAGE_TAG $ACR_REG/$IMAGE_NAME:$IMAGE_TAG"
-                sshCommand remote: remote, command: "sudo docker login $ACR_REG -u $ACR_NAME -p ${DOCKER_PASSWORD}"
-                sshCommand remote: remote, command: "sudo docker push $ACR_REG/$IMAGE_NAME:$IMAGE_TAG"
-                
-                //sshCommand remote: remote, command: "sudo docker build -t javasampletomcat:$BUILD_NUMBER temp"
-                //sshCommand remote: remote, command: "sudo docker tag javasampletomcat:$BUILD_NUMBER myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
-                //sshCommand remote: remote, command: "sudo docker login myacr032023.azurecr.io -u 'myacr032023' -p ${env.DOCKER_PASSWORD}"
-                //sshCommand remote: remote, command: "sudo docker push myacr032023.azurecr.io/javasampletomcat:$BUILD_NUMBER"
-                //sshCommand remote: remote, command: "sudo rm -rf temp/*"
-
-            //sh 'docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$IMAGE_TAG .'
-            }
-            echo  "${env.DOCKER_PASSWORD}"
-          }
-        }
-        stage('Update deployment.yaml') {
-          steps {
-            script {
-              sh """
-                sed -i 's|{{CONTAINER_IMAGE}}|${env.IMAGE_NAME}|' deployment.yaml
-                sed -i 's|{{CONTAINER_TAG}}|${env.IMAGE_TAG}|' deployment.yaml
-              """
+                 PushBuildImageToACR()
             }
           }
-        }
+        }       
     }
 }
