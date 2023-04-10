@@ -4,12 +4,12 @@ pipeline {
     agent any
       environment {
        sonarlogin = credentials('sonarqube-token')
-       nexuscred = credentials('nexus-user')     
-        NEXUS_VERSION = "nexus3"
-        NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "localhost:8081"
-        NEXUS_REPOSITORY = "java-mvn-CI-repo"
-        NEXUS_CREDENTIAL_ID = "nexus-user"
+       nexuscred = credentials('nexus-user')
+       NEXUS_VERSION = "nexus3"
+       NEXUS_PROTOCOL = "http"
+       NEXUS_URL = "localhost:8081"
+       NEXUS_REPOSITORY = "java-mvn-CI-repo"
+       NEXUS_CREDENTIAL_ID = "nexus-user"
        } 
     tools {
         maven 'maven-home'
