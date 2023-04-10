@@ -42,7 +42,7 @@ pipeline {
             }           
         } 
         
-        stage('Store war to Nexus') { 
+        stage('Store war to Nexus artifact uploader') { 
             steps{ 
               script{ 
                     pom = readMavenPom file: "pom.xml"; 
