@@ -1,9 +1,10 @@
-[![Build Status](https://travis-ci.org/DEV3L/mvn-hello-world-web-app.png)](https://travis-ci.org/DEV3L/mvn-hello-world-web-app)
 
 # mvn-hello-world-web-app
 Java Hello World web application created using maven-archetype-webapp
 
-## Dependancies
+## Prerequisites
 * git
-* maven
-* tomcat
+* maven 3.8.7
+* tomcat 9.0.70
+* sonarqube 8.9.10
+* nexus 3.45.0
