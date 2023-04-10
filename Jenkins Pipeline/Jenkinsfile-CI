@@ -3,8 +3,6 @@ pipeline {
     agent any
     environment {
         MAVEN_OPTS = '-Xmx2g'
-        //DOCKER_HUB_USER = "localdocker23"
-        //DOCKER_HUB_PASSWORD = "Arati@2023"
         DOCKER_IMAGE_NAME = 'localdocker23/JavaMaven'
         DOCKER_IMAGE_TAG = 'latest'
         azcon = credentials('az_sp')
@@ -46,11 +44,6 @@ pipeline {
                 StoreToNexus()                
             }           
         } 
-        //stage('Pull the file off Nexus') {
-        //    steps {
-        //        DownloadFromNexus()                  
-        //    }
-        //}
          stage('Fetch Public IP') {
             steps {
                 FetchPublicIPOfVM()             
