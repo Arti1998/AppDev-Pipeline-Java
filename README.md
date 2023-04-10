@@ -13,11 +13,11 @@ Java Hello World web application created using maven-archetype-webapp
 * VM with pre-installed tomcat
 
 ## Plugins
-Maven Integration plugin:
-Jenkins Pipeline plugin
-JUnit Plugin
-Deploy to container plugin
-SonarQube Scanner for Jenkins plugin
-Nexus Platform plugin
-Nexus Artifact Uploader
-Pipeline Utility Steps
+* Maven Integration plugin
+* Jenkins Pipeline plugin
+* JUnit Plugin
+* Deploy to container plugin
+* SonarQube Scanner for Jenkins plugin
+* Nexus Platform plugin
+* Nexus Artifact Uploader
+*Pipeline Utility Steps
