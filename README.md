@@ -20,4 +20,4 @@ Java Hello World web application created using maven-archetype-webapp
 * SonarQube Scanner for Jenkins plugin
 * Nexus Platform plugin
 * Nexus Artifact Uploader
-*Pipeline Utility Steps
+* Pipeline Utility Steps
