@@ -36,13 +36,13 @@ pipeline {
                SonarApp(sonarlogin)                        
            }
         }
-        stage('Store war to Nexus') {
-            steps{
-                StoreToNexus()                
-            }           
-        } 
+        //stage('Store war to Nexus') {
+        //    steps{
+        //        StoreToNexus()                
+        //    }           
+        //} 
         
-        stage('Store war to Nexus artifact uploader') { 
+        stage('Store war to Nexus') { 
             steps{ 
               script{ 
                     UploadNexusArtifact()
