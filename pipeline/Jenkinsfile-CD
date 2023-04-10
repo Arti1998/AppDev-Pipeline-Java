@@ -27,7 +27,7 @@ pipeline {
     stage('DeployToTomcat') {   
       steps{
         withCredentials([usernamePassword(credentialsId: 'vm-creds', passwordVariable: 'password', usernameVariable: 'username')]) {
-        DeployToTomcat(username, password)
+        DeployToTomcatVM(username, password)
        }
        }
        }
