@@ -29,10 +29,17 @@ pipeline {
                SonarApp(sonarlogin)                        
            }
         }
-         stage('Store war to Nexus') {
-            steps{
-                StoreToNexus()                
-            }           
-        } 
+        // stage('Store war to Nexus') {
+        //    steps{
+        //        StoreToNexus()                
+        //   }           
+        //} 
+         stage('Store war to Nexus') { 
+            steps{ 
+              script{ 
+                    UploadNexusArtifact()
+                } 
+            } 
+         }
     }
 }
