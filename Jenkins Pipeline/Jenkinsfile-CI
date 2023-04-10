@@ -1,0 +1,38 @@
+@Library('github.com/ranjitaws2020/java-shared-library@pipeline') _
+pipeline {
+    agent any
+    environment {        
+        sonarlogin = credentials('sonarqube-token')
+    }
+    tools {
+        maven 'maven-home'
+        jdk 'jdk8'
+    }
+    stages {     
+        stage('Build') {
+             steps {                
+                BuildApp()
+             }
+        }
+         stage('Test') {
+            steps {
+                 TestApp()
+            }
+             post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+         stage('Sonar Analysis') {
+           steps {
+               SonarApp(sonarlogin)                        
+           }
+        }
+         stage('Store war to Nexus') {
+            steps{
+                StoreToNexus()                
+            }           
+        } 
+    }
+}
