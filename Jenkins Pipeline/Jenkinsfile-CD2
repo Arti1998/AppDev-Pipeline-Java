@@ -5,18 +5,29 @@ pipeline {
      environment {
         azcon = credentials('az_sp')
       }
-    stages {  
-
+    stages {
+        stage('Infra Provisioning') {
+           steps {
+                Infra()
+           }
+        }
         stage('Fetch Public IP') {
             steps {
                      FetchPublicIPOfVM()
                 
             }
         }
-        stage('Pull Image-DockerHub') {
+        stage('Download Artifact Form Nexus') {
               steps {
-                    PullImageDockerHub()                    
-                    }
-         }       
+                DownloadFromNexus()
+              }
+        }
+        stage('DeployToTomcat') {   
+              steps{
+                withCredentials([usernamePassword(credentialsId: 'vm-creds', passwordVariable: 'password', usernameVariable: 'username')]) {
+                DeployToTomcat(username, password)
+               }
+               }
+       }
     }
 }
